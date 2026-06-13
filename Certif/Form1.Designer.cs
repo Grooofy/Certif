@@ -42,6 +42,10 @@
             numRegSize = new NumericUpDown();
             numRegY = new NumericUpDown();
             gbTableSettings = new GroupBox();
+            lblGoogleStatus = new Label();
+            btnLoadGoogleSheet = new Button();
+            txtGoogleSheetUrl = new TextBox();
+            lblGoogleHint = new Label();
             lblSquadHint = new Label();
             cmbSquadCol = new ComboBox();
             lblLevelHint = new Label();
@@ -291,6 +295,10 @@
             // 
             // gbTableSettings
             // 
+            gbTableSettings.Controls.Add(lblGoogleStatus);
+            gbTableSettings.Controls.Add(btnLoadGoogleSheet);
+            gbTableSettings.Controls.Add(txtGoogleSheetUrl);
+            gbTableSettings.Controls.Add(lblGoogleHint);
             gbTableSettings.Controls.Add(lblSquadHint);
             gbTableSettings.Controls.Add(cmbSquadCol);
             gbTableSettings.Controls.Add(lblLevelHint);
@@ -307,15 +315,52 @@
             gbTableSettings.Margin = new Padding(2);
             gbTableSettings.Name = "gbTableSettings";
             gbTableSettings.Padding = new Padding(2);
-            gbTableSettings.Size = new Size(232, 320);
+            gbTableSettings.Size = new Size(232, 395);
             gbTableSettings.TabIndex = 4;
             gbTableSettings.TabStop = false;
             gbTableSettings.Text = "Таблица";
             // 
+            // lblGoogleStatus
+            // 
+            lblGoogleStatus.AutoSize = true;
+            lblGoogleStatus.Location = new Point(55, 150);
+            lblGoogleStatus.Name = "lblGoogleStatus";
+            lblGoogleStatus.Size = new Size(73, 15);
+            lblGoogleStatus.TabIndex = 24;
+            lblGoogleStatus.Text = "Ожидание...";
+            // 
+            // btnLoadGoogleSheet
+            // 
+            btnLoadGoogleSheet.Location = new Point(5, 118);
+            btnLoadGoogleSheet.Name = "btnLoadGoogleSheet";
+            btnLoadGoogleSheet.Size = new Size(191, 29);
+            btnLoadGoogleSheet.TabIndex = 23;
+            btnLoadGoogleSheet.Text = "🌐 Загрузить из Google";
+            btnLoadGoogleSheet.UseVisualStyleBackColor = true;
+            btnLoadGoogleSheet.Click += btnLoadGoogleSheet_Click;
+            // 
+            // txtGoogleSheetUrl
+            // 
+            txtGoogleSheetUrl.Location = new Point(5, 89);
+            txtGoogleSheetUrl.Name = "txtGoogleSheetUrl";
+            txtGoogleSheetUrl.Size = new Size(191, 23);
+            txtGoogleSheetUrl.TabIndex = 22;
+            // 
+            // lblGoogleHint
+            // 
+            lblGoogleHint.AutoSize = true;
+            lblGoogleHint.Location = new Point(5, 71);
+            lblGoogleHint.Name = "lblGoogleHint";
+            lblGoogleHint.Size = new Size(159, 15);
+            lblGoogleHint.TabIndex = 21;
+            lblGoogleHint.Text = "Ссылка на Google Таблицу ";
+            lblGoogleHint.TextAlign = ContentAlignment.MiddleCenter;
+            lblGoogleHint.Visible = false;
+            // 
             // lblSquadHint
             // 
             lblSquadHint.AutoSize = true;
-            lblSquadHint.Location = new Point(4, 262);
+            lblSquadHint.Location = new Point(5, 348);
             lblSquadHint.Margin = new Padding(2, 0, 2, 0);
             lblSquadHint.Name = "lblSquadHint";
             lblSquadHint.Size = new Size(94, 15);
@@ -326,7 +371,7 @@
             // 
             cmbSquadCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSquadCol.FormattingEnabled = true;
-            cmbSquadCol.Location = new Point(4, 279);
+            cmbSquadCol.Location = new Point(5, 365);
             cmbSquadCol.Margin = new Padding(2);
             cmbSquadCol.Name = "cmbSquadCol";
             cmbSquadCol.Size = new Size(184, 23);
@@ -335,7 +380,7 @@
             // lblLevelHint
             // 
             lblLevelHint.AutoSize = true;
-            lblLevelHint.Location = new Point(4, 219);
+            lblLevelHint.Location = new Point(5, 305);
             lblLevelHint.Margin = new Padding(2, 0, 2, 0);
             lblLevelHint.Name = "lblLevelHint";
             lblLevelHint.Size = new Size(157, 15);
@@ -346,7 +391,7 @@
             // 
             cmbLevelCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbLevelCol.FormattingEnabled = true;
-            cmbLevelCol.Location = new Point(4, 236);
+            cmbLevelCol.Location = new Point(5, 322);
             cmbLevelCol.Margin = new Padding(2);
             cmbLevelCol.Name = "cmbLevelCol";
             cmbLevelCol.Size = new Size(184, 23);
@@ -355,7 +400,7 @@
             // lblWorkshopHint
             // 
             lblWorkshopHint.AutoSize = true;
-            lblWorkshopHint.Location = new Point(4, 177);
+            lblWorkshopHint.Location = new Point(5, 263);
             lblWorkshopHint.Margin = new Padding(2, 0, 2, 0);
             lblWorkshopHint.Name = "lblWorkshopHint";
             lblWorkshopHint.Size = new Size(95, 15);
@@ -366,7 +411,7 @@
             // 
             cmbWorkshopCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWorkshopCol.FormattingEnabled = true;
-            cmbWorkshopCol.Location = new Point(4, 194);
+            cmbWorkshopCol.Location = new Point(5, 280);
             cmbWorkshopCol.Margin = new Padding(2);
             cmbWorkshopCol.Name = "cmbWorkshopCol";
             cmbWorkshopCol.Size = new Size(184, 23);
@@ -386,7 +431,7 @@
             // lblRegHint
             // 
             lblRegHint.AutoSize = true;
-            lblRegHint.Location = new Point(4, 131);
+            lblRegHint.Location = new Point(5, 217);
             lblRegHint.Margin = new Padding(2, 0, 2, 0);
             lblRegHint.Name = "lblRegHint";
             lblRegHint.Size = new Size(96, 15);
@@ -396,7 +441,7 @@
             // lblFioHint
             // 
             lblFioHint.AutoSize = true;
-            lblFioHint.Location = new Point(4, 86);
+            lblFioHint.Location = new Point(5, 172);
             lblFioHint.Margin = new Padding(2, 0, 2, 0);
             lblFioHint.Name = "lblFioHint";
             lblFioHint.Size = new Size(84, 15);
@@ -407,7 +452,7 @@
             // 
             cmbRegCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRegCol.FormattingEnabled = true;
-            cmbRegCol.Location = new Point(4, 151);
+            cmbRegCol.Location = new Point(5, 237);
             cmbRegCol.Margin = new Padding(2);
             cmbRegCol.Name = "cmbRegCol";
             cmbRegCol.Size = new Size(184, 23);
@@ -417,7 +462,7 @@
             // 
             cmbFioCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFioCol.FormattingEnabled = true;
-            cmbFioCol.Location = new Point(4, 103);
+            cmbFioCol.Location = new Point(5, 189);
             cmbFioCol.Margin = new Padding(2);
             cmbFioCol.Name = "cmbFioCol";
             cmbFioCol.Size = new Size(184, 23);
@@ -436,7 +481,7 @@
             // 
             // btnSelectBg
             // 
-            btnSelectBg.Location = new Point(616, 357);
+            btnSelectBg.Location = new Point(616, 420);
             btnSelectBg.Margin = new Padding(2);
             btnSelectBg.Name = "btnSelectBg";
             btnSelectBg.Size = new Size(128, 55);
@@ -447,7 +492,7 @@
             // 
             // btnGenerate
             // 
-            btnGenerate.Location = new Point(616, 486);
+            btnGenerate.Location = new Point(616, 549);
             btnGenerate.Margin = new Padding(2);
             btnGenerate.Name = "btnGenerate";
             btnGenerate.Size = new Size(128, 51);
@@ -459,7 +504,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(616, 554);
+            lblStatus.Location = new Point(616, 617);
             lblStatus.Margin = new Padding(2, 0, 2, 0);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(38, 15);
@@ -816,7 +861,7 @@
             // 
             pnlGlobalColor.BackColor = SystemColors.ActiveCaptionText;
             pnlGlobalColor.BorderStyle = BorderStyle.FixedSingle;
-            pnlGlobalColor.Location = new Point(616, 451);
+            pnlGlobalColor.Location = new Point(616, 514);
             pnlGlobalColor.Name = "pnlGlobalColor";
             pnlGlobalColor.Size = new Size(30, 30);
             pnlGlobalColor.TabIndex = 14;
@@ -824,7 +869,7 @@
             // btnGlobalPipette
             // 
             btnGlobalPipette.AutoSize = true;
-            btnGlobalPipette.Location = new Point(652, 453);
+            btnGlobalPipette.Location = new Point(652, 516);
             btnGlobalPipette.Name = "btnGlobalPipette";
             btnGlobalPipette.Size = new Size(138, 28);
             btnGlobalPipette.TabIndex = 15;
@@ -942,7 +987,7 @@
             // 
             cmbFontSelector.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFontSelector.FormattingEnabled = true;
-            cmbFontSelector.Location = new Point(616, 422);
+            cmbFontSelector.Location = new Point(616, 485);
             cmbFontSelector.MaxDropDownItems = 15;
             cmbFontSelector.Name = "cmbFontSelector";
             cmbFontSelector.Size = new Size(121, 23);
@@ -952,7 +997,7 @@
             // lblFontStatus
             // 
             lblFontStatus.AutoSize = true;
-            lblFontStatus.Location = new Point(745, 425);
+            lblFontStatus.Location = new Point(745, 488);
             lblFontStatus.Name = "lblFontStatus";
             lblFontStatus.Size = new Size(107, 15);
             lblFontStatus.TabIndex = 19;
@@ -1225,5 +1270,9 @@
         private Button btnPlaceMainText;
         private NumericUpDown numMainTextSize;
         private Label label23;
+        private TextBox txtGoogleSheetUrl;
+        private Label lblGoogleHint;
+        private Button btnLoadGoogleSheet;
+        private Label lblGoogleStatus;
     }
 }

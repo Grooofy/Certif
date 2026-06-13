@@ -3,9 +3,8 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System.Data;
 using System.Drawing.Text;
-using System.IO;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Certif
 {
@@ -36,7 +35,7 @@ namespace Certif
 
         public lblHours()
         {
-            InitializeComponent();  
+            InitializeComponent();
 
             // 2. Привязка событий для ФИО и Региона
             numFioY.ValueChanged += (s, e) => UpdatePreview();
@@ -123,6 +122,95 @@ namespace Certif
             }
         }
 
+        // Метод для обновления выпадающих списков после загрузки любых данных
+        private void UpdateUIFromDataTable()
+        {
+            lblDataInfo.Text = $"✅ Загружено: {dataTable.Rows.Count} строк";
+            lblStatus.Text = "Таблица успешно загружена.";
+
+            cmbFioCol.Items.Clear(); cmbFioCol.Items.Add(SKIP_OPTION);
+            cmbRegCol.Items.Clear(); cmbRegCol.Items.Add(SKIP_OPTION);
+            cmbWorkshopCol.Items.Clear(); cmbWorkshopCol.Items.Add(SKIP_OPTION);
+            cmbLevelCol.Items.Clear(); cmbLevelCol.Items.Add(SKIP_OPTION);
+            cmbSquadCol.Items.Clear(); cmbSquadCol.Items.Add(SKIP_OPTION);
+
+            foreach (DataColumn col in dataTable.Columns)
+            {
+                cmbFioCol.Items.Add(col.ColumnName);
+                cmbRegCol.Items.Add(col.ColumnName);
+                cmbWorkshopCol.Items.Add(col.ColumnName);
+                cmbLevelCol.Items.Add(col.ColumnName);
+                cmbSquadCol.Items.Add(col.ColumnName);
+            }
+
+            foreach (DataColumn col in dataTable.Columns)
+            {
+                string colName = col.ColumnName;
+                string lower = colName.ToLower();
+                if (lower.Contains("фио") || lower.Contains("имя") || lower.Contains("фамилия")) cmbFioCol.SelectedItem = colName;
+                if (lower.Contains("регион") || lower.Contains("город") || lower.Contains("область")) cmbRegCol.SelectedItem = colName;
+                if (lower.Contains("мастерская") || lower.Contains("студия") || lower.Contains("цех") || lower.Contains("лаборатория")) cmbWorkshopCol.SelectedItem = colName;
+                if (lower.Contains("уровень") || lower.Contains("квалификация") || lower.Contains("разряд") || lower.Contains("класс")) cmbLevelCol.SelectedItem = colName;
+                if (lower.Contains("отряд") || lower.Contains("команда") || lower.Contains("группа") || lower.Contains("смена")) cmbSquadCol.SelectedItem = colName;
+            }
+
+            if (cmbFioCol.SelectedItem == null) cmbFioCol.SelectedItem = SKIP_OPTION;
+            if (cmbRegCol.SelectedItem == null) cmbRegCol.SelectedItem = SKIP_OPTION;
+            if (cmbWorkshopCol.SelectedItem == null) cmbWorkshopCol.SelectedItem = SKIP_OPTION;
+            if (cmbLevelCol.SelectedItem == null) cmbLevelCol.SelectedItem = SKIP_OPTION;
+            if (cmbSquadCol.SelectedItem == null) cmbSquadCol.SelectedItem = SKIP_OPTION;
+        }
+
+        // Метод для обработки CSV-текста (из файла или из Google)
+        private void ProcessCsvData(string csvContent)
+        {
+            try
+            {
+                // 1. Проверка на HTML (ошибка доступа Google)
+                if (csvContent.TrimStart().StartsWith("<"))
+                {
+                    MessageBox.Show("Ошибка: Не удалось прочитать таблицу.\n\nУбедитесь, что в настройках Google Таблицы установлен доступ:\n'Все, у кого есть ссылка' -> 'Читатель'.", "Ошибка доступа", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    lblGoogleStatus.Text = "❌ Ошибка доступа";
+                    return;
+                }
+
+                dataTable = new DataTable();
+                string[] lines = csvContent.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (lines.Length == 0)
+                {
+                    MessageBox.Show("Таблица пуста.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Умное определение разделителя (Google обычно использует ',', локальные CSV могут быть ';')
+                char delimiter = lines[0].Contains(';') ? ';' : ',';
+
+                string[] headers = lines[0].Split(delimiter);
+                foreach (string header in headers)
+                {
+                    dataTable.Columns.Add(header.Trim());
+                }
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string[] values = lines[i].Split(delimiter);
+                    if (values.Length > 0 && !string.IsNullOrWhiteSpace(lines[i]))
+                    {
+                        dataTable.Rows.Add(values);
+                    }
+                }
+
+                // 3. Обновляем интерфейс
+                lblGoogleStatus.Text = "✅ Успешно загружено из Google";
+                UpdateUIFromDataTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка обработки CSV:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void btnSelectBg_Click(object sender, EventArgs e)
         {
@@ -166,111 +254,40 @@ namespace Certif
                 {
                     try
                     {
-                        dataTable = new DataTable();
                         string ext = Path.GetExtension(ofd.FileName).ToLower();
 
-                        // --- ВАРИАНТ 1: Чтение Excel (.xlsx) ---
                         if (ext == ".xlsx")
                         {
-                            using (var workbook = new XLWorkbook(ofd.FileName))
+                            dataTable = new DataTable();
+                            using (var workbook = new ClosedXML.Excel.XLWorkbook(ofd.FileName))
                             {
-                                var worksheet = workbook.Worksheet(1); // Берем первый лист
-                                var range = worksheet.RangeUsed();     // Получаем область с данными
+                                var worksheet = workbook.Worksheet(1);
+                                var range = worksheet.RangeUsed();
+                                if (range == null) throw new Exception("Лист Excel пуст.");
 
-                                if (range == null)
-                                {
-                                    throw new Exception("Лист Excel пуст.");
-                                }
-
-                                // 1. Создаем колонки на основе первой строки (заголовки)
                                 foreach (var cell in range.Row(1).Cells())
-                                {
                                     dataTable.Columns.Add(cell.GetString().Trim());
-                                }
 
-                                // 2. Заполняем строки данными, начиная со второй строки
                                 for (int row = 2; row <= range.RowCount(); row++)
                                 {
                                     var dataRow = dataTable.NewRow();
                                     int colIndex = 0;
-
                                     foreach (var cell in range.Row(row).Cells())
                                     {
-                                        // Если колонок в строке меньше, чем в заголовке, заполняем пустотой
-                                        if (colIndex < dataTable.Columns.Count)
-                                        {
-                                            dataRow[colIndex] = cell.GetString();
-                                        }
+                                        if (colIndex < dataTable.Columns.Count) dataRow[colIndex] = cell.GetString();
                                         colIndex++;
                                     }
                                     dataTable.Rows.Add(dataRow);
                                 }
                             }
+                            lblGoogleStatus.Text = "✅ Загружено из файла";
+                            UpdateUIFromDataTable();
                         }
-                        // --- ВАРИАНТ 2: Чтение CSV (.csv) ---
                         else if (ext == ".csv")
                         {
-                            // Читаем все строки файла в кодировке UTF-8
-                            string[] lines = File.ReadAllLines(ofd.FileName, System.Text.Encoding.UTF8);
-                            if (lines.Length > 0)
-                            {
-                                // Первая строка - это заголовки колонок (разделитель точка с запятой)
-                                string[] headers = lines[0].Split(';');
-                                foreach (string header in headers)
-                                {
-                                    dataTable.Columns.Add(header.Trim());
-                                }
-
-                                // Остальные строки - это данные
-                                for (int i = 1; i < lines.Length; i++)
-                                {
-                                    if (string.IsNullOrWhiteSpace(lines[i])) continue; // Пропускаем пустые строки
-                                    dataTable.Rows.Add(lines[i].Split(';'));
-                                }
-                            }
+                            string csvContent = File.ReadAllText(ofd.FileName, System.Text.Encoding.UTF8);
+                            ProcessCsvData(csvContent);
                         }
-
-                        // Обновляем интерфейс
-                        lblDataInfo.Text = $"✅ Загружено: {dataTable.Rows.Count} строк";
-                        lblStatus.Text = "Таблица успешно загружена.";
-
-                        // Очищаем старые значения в выпадающих списках
-                        // 1. Очищаем списки и сразу добавляем опцию пропуска
-                        cmbFioCol.Items.Clear(); cmbFioCol.Items.Add(SKIP_OPTION);
-                        cmbRegCol.Items.Clear(); cmbRegCol.Items.Add(SKIP_OPTION);
-                        cmbWorkshopCol.Items.Clear(); cmbWorkshopCol.Items.Add(SKIP_OPTION);
-                        cmbLevelCol.Items.Clear(); cmbLevelCol.Items.Add(SKIP_OPTION);
-                        cmbSquadCol.Items.Clear(); cmbSquadCol.Items.Add(SKIP_OPTION);
-
-                        // 2. Заполняем списки названиями колонок из таблицы
-                        foreach (DataColumn col in dataTable.Columns)
-                        {
-                            cmbFioCol.Items.Add(col.ColumnName);
-                            cmbRegCol.Items.Add(col.ColumnName);
-                            cmbWorkshopCol.Items.Add(col.ColumnName);
-                            cmbLevelCol.Items.Add(col.ColumnName);
-                            cmbSquadCol.Items.Add(col.ColumnName);
-                        }
-
-                        // 3. Умный автовыбор колонок
-                        foreach (DataColumn col in dataTable.Columns)
-                        {
-                            string colName = col.ColumnName;
-                            string lower = colName.ToLower();
-
-                            if (lower.Contains("фио") || lower.Contains("имя") || lower.Contains("фамилия")) cmbFioCol.SelectedItem = colName;
-                            if (lower.Contains("регион") || lower.Contains("город") || lower.Contains("область")) cmbRegCol.SelectedItem = colName;
-                            if (lower.Contains("мастерская") || lower.Contains("студии") || lower.Contains("цех") || lower.Contains("лаборатория")) cmbWorkshopCol.SelectedItem = colName;
-                            if (lower.Contains("уровень") || lower.Contains("квалификация") || lower.Contains("разряд") || lower.Contains("класс")) cmbLevelCol.SelectedItem = colName;
-                            if (lower.Contains("отряд") || lower.Contains("команда") || lower.Contains("группа") || lower.Contains("смена")) cmbSquadCol.SelectedItem = colName;
-                        }
-
-                        // 4. Если автовыбор не сработал, принудительно ставим "-- Не печатать --"
-                        if (cmbFioCol.SelectedItem == null) cmbFioCol.SelectedItem = SKIP_OPTION;
-                        if (cmbRegCol.SelectedItem == null) cmbRegCol.SelectedItem = SKIP_OPTION;
-                        if (cmbWorkshopCol.SelectedItem == null) cmbWorkshopCol.SelectedItem = SKIP_OPTION;
-                        if (cmbLevelCol.SelectedItem == null) cmbLevelCol.SelectedItem = SKIP_OPTION;
-                        if (cmbSquadCol.SelectedItem == null) cmbSquadCol.SelectedItem = SKIP_OPTION;
                     }
                     catch (Exception ex)
                     {
@@ -361,7 +378,7 @@ namespace Certif
                                 regText = dataTable.Rows[0][cmbRegCol.SelectedItem.ToString()].ToString();
                                 regText = $"({regText})";
                             }
-                                
+
 
                             SizeF regSize = g.MeasureString(regText, fontReg);
                             float regX = Math.Max(0, (backgroundImage.Width - regSize.Width) / 2f);
@@ -383,7 +400,7 @@ namespace Certif
                                 workshopText = dataTable.Rows[0][cmbWorkshopCol.SelectedItem.ToString()].ToString();
 
                             SizeF workshopSize = g.MeasureString(workshopText, fontWorkshop);
-                            float workshopX = Math.Max(0, (backgroundImage.Width - workshopSize.Width) / 2f);                           
+                            float workshopX = Math.Max(0, (backgroundImage.Width - workshopSize.Width) / 2f);
                             g.DrawString(workshopText, fontWorkshop, textBrush, workshopX, (float)numWorkshopY.Value);
                         }
 
@@ -926,6 +943,62 @@ namespace Certif
             activePlacementMode = "MAIN_TEXT";
             pbPreview.Cursor = Cursors.Cross;
             lblStatus.Text = "🎯 Кликните по изображению, чтобы задать высоту для основного текста";
+        }
+
+        private async void btnLoadGoogleSheet_Click(object sender, EventArgs e)
+        {
+            string url = txtGoogleSheetUrl.Text.Trim();
+            if (string.IsNullOrEmpty(url))
+            {
+                MessageBox.Show("Введите ссылку на Google Таблицу.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!url.Contains("docs.google.com/spreadsheets/d/"))
+            {
+                MessageBox.Show("Неверный формат ссылки. Убедитесь, что это ссылка на Google Таблицу.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            lblGoogleStatus.Text = "⏳ Загрузка...";
+            lblStatus.Text = "⏳ Загрузка данных из Google...";
+            Application.DoEvents(); // Обновляем интерфейс перед запросом
+
+            try
+            {
+                // 1. Извлекаем ID таблицы (между /d/ и /edit)
+                Match idMatch = Regex.Match(url, @"/d/([a-zA-Z0-9-_]+)");
+                if (!idMatch.Success)
+                {
+                    throw new Exception("Не удалось найти ID таблицы в ссылке.");
+                }
+                string sheetId = idMatch.Groups[1].Value;
+
+                // 2. Извлекаем GID вкладки (если есть, иначе 0 - первая вкладка)
+                Match gidMatch = Regex.Match(url, @"gid=(\d+)");
+                string gid = gidMatch.Success ? gidMatch.Groups[1].Value : "0";
+
+                // 3. Формируем прямую ссылку для экспорта в CSV
+                string exportUrl = $"https://docs.google.com/spreadsheets/d/{sheetId}/export?format=csv&gid={gid}";
+
+                // 4. Скачиваем данные
+                using (HttpClient client = new HttpClient())
+                {
+                    // Добавляем User-Agent, чтобы Google не блокировал запрос как бота
+                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+
+                    string csvContent = await client.GetStringAsync(exportUrl);
+
+                    // 5. Обрабатываем данные
+                    ProcessCsvData(csvContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке из Google:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblGoogleStatus.Text = "❌ Ошибка";
+                lblStatus.Text = "Ошибка загрузки.";
+            }
         }
     }
 
