@@ -962,42 +962,95 @@ namespace Certif
 
             lblGoogleStatus.Text = "⏳ Загрузка...";
             lblStatus.Text = "⏳ Загрузка данных из Google...";
-            Application.DoEvents(); // Обновляем интерфейс перед запросом
+            Application.DoEvents();
 
             try
             {
-                // 1. Извлекаем ID таблицы (между /d/ и /edit)
+                // 1. Извлекаем ID таблицы
                 Match idMatch = Regex.Match(url, @"/d/([a-zA-Z0-9-_]+)");
-                if (!idMatch.Success)
-                {
-                    throw new Exception("Не удалось найти ID таблицы в ссылке.");
-                }
+                if (!idMatch.Success) throw new Exception("Не удалось найти ID таблицы в ссылке.");
                 string sheetId = idMatch.Groups[1].Value;
 
-                // 2. Извлекаем GID вкладки (если есть, иначе 0 - первая вкладка)
+                // 2. Извлекаем GID вкладки (если есть, иначе 0)
                 Match gidMatch = Regex.Match(url, @"gid=(\d+)");
                 string gid = gidMatch.Success ? gidMatch.Groups[1].Value : "0";
 
-                // 3. Формируем прямую ссылку для экспорта в CSV
-                string exportUrl = $"https://docs.google.com/spreadsheets/d/{sheetId}/export?format=csv&gid={gid}";
+                // 3. !!! ГЛАВНОЕ ИЗМЕНЕНИЕ: просим формат xlsx вместо csv !!!
+                string exportUrl = $"https://docs.google.com/spreadsheets/d/{sheetId}/export?format=xlsx&gid={gid}";
 
-                // 4. Скачиваем данные
+                // 4. Скачиваем файл как массив байтов
                 using (HttpClient client = new HttpClient())
                 {
-                    // Добавляем User-Agent, чтобы Google не блокировал запрос как бота
                     client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
 
-                    string csvContent = await client.GetStringAsync(exportUrl);
+                    // Скачиваем байты Excel-файла
+                    byte[] fileBytes = await client.GetByteArrayAsync(exportUrl);
 
-                    // 5. Обрабатываем данные
-                    ProcessCsvData(csvContent);
+                    // 5. Передаем байты в наш надежный Excel-парсер
+                    ProcessGoogleExcelData(fileBytes);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка при загрузке из Google:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ошибка при загрузке из Google:\n" + ex.Message + "\n\nУбедитесь, что доступ к таблице открыт: 'Все, у кого есть ссылка' -> 'Читатель'.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblGoogleStatus.Text = "❌ Ошибка";
                 lblStatus.Text = "Ошибка загрузки.";
+            }
+        }
+
+        private void ProcessGoogleExcelData(byte[] fileBytes)
+        {
+            try
+            {
+                dataTable = new DataTable();
+
+                // Читаем байты как поток Excel-файла
+                using (var stream = new MemoryStream(fileBytes))
+                {
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook(stream))
+                    {
+                        var worksheet = workbook.Worksheet(1);
+                        var range = worksheet.RangeUsed();
+
+                        if (range == null)
+                        {
+                            MessageBox.Show("Лист Google Таблицы пуст.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // 1. Создаем колонки из первой строки
+                        foreach (var cell in range.Row(1).Cells())
+                        {
+                            dataTable.Columns.Add(cell.GetString().Trim());
+                        }
+
+                        // 2. Заполняем строки данными (ClosedXML сам корректно обработает запятые и переносы внутри ячеек!)
+                        for (int row = 2; row <= range.RowCount(); row++)
+                        {
+                            var dataRow = dataTable.NewRow();
+                            int colIndex = 0;
+
+                            foreach (var cell in range.Row(row).Cells())
+                            {
+                                if (colIndex < dataTable.Columns.Count)
+                                {
+                                    dataRow[colIndex] = cell.GetString();
+                                }
+                                colIndex++;
+                            }
+                            dataTable.Rows.Add(dataRow);
+                        }
+                    }
+                }
+
+                // 3. Обновляем интерфейс
+                lblGoogleStatus.Text = "✅ Успешно загружено из Google (Excel)";
+                UpdateUIFromDataTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка обработки данных из Google:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblGoogleStatus.Text = "❌ Ошибка обработки";
             }
         }
     }
