@@ -357,7 +357,11 @@ namespace Certif
                         {
                             string regText = "г. Москва";
                             if (dataTable != null && dataTable.Rows.Count > 0 && cmbRegCol.SelectedItem != null)
+                            {
                                 regText = dataTable.Rows[0][cmbRegCol.SelectedItem.ToString()].ToString();
+                                regText = $"({regText})";
+                            }
+                                
 
                             SizeF regSize = g.MeasureString(regText, fontReg);
                             float regX = Math.Max(0, (backgroundImage.Width - regSize.Width) / 2f);
