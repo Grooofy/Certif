@@ -48,7 +48,29 @@
             lblGoogleHint = new Label();
             lblSquadHint = new Label();
             cmbSquadCol = new ComboBox();
+            groupBox1 = new GroupBox();
+            label8 = new Label();
+            btnPlaceWorkshop = new Button();
+            label9 = new Label();
+            numWorkshopSize = new NumericUpDown();
+            numWorkshopY = new NumericUpDown();
+            groupBox4 = new GroupBox();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            btnPlaceSquad = new Button();
+            numSquadSize = new NumericUpDown();
+            numSquadY = new NumericUpDown();
+            numSquadX = new NumericUpDown();
             lblLevelHint = new Label();
+            groupBox2 = new GroupBox();
+            label1 = new Label();
+            numLevelYText = new Label();
+            numLevelXText = new Label();
+            btnPlaceLevel = new Button();
+            numLevelSize = new NumericUpDown();
+            numLevelY = new NumericUpDown();
+            numLevelX = new NumericUpDown();
             cmbLevelCol = new ComboBox();
             lblWorkshopHint = new Label();
             cmbWorkshopCol = new ComboBox();
@@ -71,28 +93,6 @@
             label13 = new Label();
             numHoursY = new NumericUpDown();
             numHoursX = new NumericUpDown();
-            groupBox1 = new GroupBox();
-            label8 = new Label();
-            btnPlaceWorkshop = new Button();
-            label9 = new Label();
-            numWorkshopSize = new NumericUpDown();
-            numWorkshopY = new NumericUpDown();
-            groupBox2 = new GroupBox();
-            label1 = new Label();
-            numLevelYText = new Label();
-            numLevelXText = new Label();
-            btnPlaceLevel = new Button();
-            numLevelSize = new NumericUpDown();
-            numLevelY = new NumericUpDown();
-            numLevelX = new NumericUpDown();
-            groupBox4 = new GroupBox();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            btnPlaceSquad = new Button();
-            numSquadSize = new NumericUpDown();
-            numSquadY = new NumericUpDown();
-            numSquadX = new NumericUpDown();
             pnlGlobalColor = new Panel();
             btnGlobalPipette = new Button();
             groupBox5 = new GroupBox();
@@ -117,6 +117,8 @@
             btnPlaceMainText = new Button();
             numMainTextSize = new NumericUpDown();
             label23 = new Label();
+            groupBox7 = new GroupBox();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)pbPreview).BeginInit();
             gbNameSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFioSize).BeginInit();
@@ -125,21 +127,21 @@
             ((System.ComponentModel.ISupportInitialize)numRegSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRegY).BeginInit();
             gbTableSettings.SuspendLayout();
-            groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numHoursSize).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numHoursY).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numHoursX).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numWorkshopSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numWorkshopY).BeginInit();
-            groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numLevelSize).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numLevelY).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numLevelX).BeginInit();
             groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSquadSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numSquadY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numSquadX).BeginInit();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numLevelSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numLevelY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numLevelX).BeginInit();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numHoursSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numHoursY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numHoursX).BeginInit();
             groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDateSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numDateY).BeginInit();
@@ -148,6 +150,7 @@
             ((System.ComponentModel.ISupportInitialize)numMainTextWidth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMainTextY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMainTextSize).BeginInit();
+            groupBox7.SuspendLayout();
             SuspendLayout();
             // 
             // pbPreview
@@ -168,11 +171,12 @@
             gbNameSettings.Controls.Add(label16);
             gbNameSettings.Controls.Add(numFioSize);
             gbNameSettings.Controls.Add(numFioY);
-            gbNameSettings.Location = new Point(862, 21);
+            gbNameSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            gbNameSettings.Location = new Point(217, 62);
             gbNameSettings.Margin = new Padding(2);
             gbNameSettings.Name = "gbNameSettings";
             gbNameSettings.Padding = new Padding(2);
-            gbNameSettings.Size = new Size(159, 126);
+            gbNameSettings.Size = new Size(170, 126);
             gbNameSettings.TabIndex = 1;
             gbNameSettings.TabStop = false;
             gbNameSettings.Text = "Параметры ФИО";
@@ -182,13 +186,13 @@
             label15.AutoSize = true;
             label15.Location = new Point(61, 51);
             label15.Name = "label15";
-            label15.Size = new Size(95, 15);
+            label15.Size = new Size(104, 15);
             label15.TabIndex = 12;
             label15.Text = "Размер шрифта";
             // 
             // button2
             // 
-            button2.Location = new Point(4, 74);
+            button2.Location = new Point(10, 74);
             button2.Margin = new Padding(2);
             button2.Name = "button2";
             button2.Size = new Size(140, 46);
@@ -202,7 +206,7 @@
             label16.AutoSize = true;
             label16.Location = new Point(61, 22);
             label16.Name = "label16";
-            label16.Size = new Size(65, 15);
+            label16.Size = new Size(70, 15);
             label16.TabIndex = 11;
             label16.Text = "По высоте";
             // 
@@ -213,7 +217,7 @@
             numFioSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
             numFioSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             numFioSize.Name = "numFioSize";
-            numFioSize.Size = new Size(48, 23);
+            numFioSize.Size = new Size(48, 24);
             numFioSize.TabIndex = 2;
             numFioSize.Value = new decimal(new int[] { 48, 0, 0, 0 });
             // 
@@ -224,7 +228,7 @@
             numFioY.Margin = new Padding(2);
             numFioY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numFioY.Name = "numFioY";
-            numFioY.Size = new Size(48, 23);
+            numFioY.Size = new Size(48, 24);
             numFioY.TabIndex = 1;
             // 
             // gbRegionSettings
@@ -234,11 +238,12 @@
             gbRegionSettings.Controls.Add(label6);
             gbRegionSettings.Controls.Add(numRegSize);
             gbRegionSettings.Controls.Add(numRegY);
-            gbRegionSettings.Location = new Point(1028, 21);
+            gbRegionSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            gbRegionSettings.Location = new Point(391, 62);
             gbRegionSettings.Margin = new Padding(2);
             gbRegionSettings.Name = "gbRegionSettings";
             gbRegionSettings.Padding = new Padding(2);
-            gbRegionSettings.Size = new Size(162, 126);
+            gbRegionSettings.Size = new Size(162, 143);
             gbRegionSettings.TabIndex = 3;
             gbRegionSettings.TabStop = false;
             gbRegionSettings.Text = "Параметры региона";
@@ -248,16 +253,16 @@
             label5.AutoSize = true;
             label5.Location = new Point(51, 51);
             label5.Name = "label5";
-            label5.Size = new Size(95, 15);
+            label5.Size = new Size(104, 15);
             label5.TabIndex = 12;
             label5.Text = "Размер шрифта";
             // 
             // btnPlaceReg
             // 
-            btnPlaceReg.Location = new Point(4, 74);
+            btnPlaceReg.Location = new Point(25, 75);
             btnPlaceReg.Margin = new Padding(2);
             btnPlaceReg.Name = "btnPlaceReg";
-            btnPlaceReg.Size = new Size(121, 47);
+            btnPlaceReg.Size = new Size(121, 57);
             btnPlaceReg.TabIndex = 3;
             btnPlaceReg.Text = "Разместить Регион на картинке";
             btnPlaceReg.UseVisualStyleBackColor = true;
@@ -268,7 +273,7 @@
             label6.AutoSize = true;
             label6.Location = new Point(51, 22);
             label6.Name = "label6";
-            label6.Size = new Size(65, 15);
+            label6.Size = new Size(70, 15);
             label6.TabIndex = 11;
             label6.Text = "По высоте";
             // 
@@ -279,7 +284,7 @@
             numRegSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
             numRegSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             numRegSize.Name = "numRegSize";
-            numRegSize.Size = new Size(42, 23);
+            numRegSize.Size = new Size(42, 24);
             numRegSize.TabIndex = 2;
             numRegSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
             // 
@@ -290,18 +295,22 @@
             numRegY.Margin = new Padding(2);
             numRegY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numRegY.Name = "numRegY";
-            numRegY.Size = new Size(42, 23);
+            numRegY.Size = new Size(42, 24);
             numRegY.TabIndex = 1;
             // 
             // gbTableSettings
             // 
+            gbTableSettings.BackColor = SystemColors.GradientActiveCaption;
             gbTableSettings.Controls.Add(lblGoogleStatus);
             gbTableSettings.Controls.Add(btnLoadGoogleSheet);
             gbTableSettings.Controls.Add(txtGoogleSheetUrl);
             gbTableSettings.Controls.Add(lblGoogleHint);
             gbTableSettings.Controls.Add(lblSquadHint);
             gbTableSettings.Controls.Add(cmbSquadCol);
+            gbTableSettings.Controls.Add(groupBox1);
+            gbTableSettings.Controls.Add(groupBox4);
             gbTableSettings.Controls.Add(lblLevelHint);
+            gbTableSettings.Controls.Add(groupBox2);
             gbTableSettings.Controls.Add(cmbLevelCol);
             gbTableSettings.Controls.Add(lblWorkshopHint);
             gbTableSettings.Controls.Add(cmbWorkshopCol);
@@ -309,13 +318,16 @@
             gbTableSettings.Controls.Add(lblRegHint);
             gbTableSettings.Controls.Add(lblFioHint);
             gbTableSettings.Controls.Add(cmbRegCol);
+            gbTableSettings.Controls.Add(gbRegionSettings);
             gbTableSettings.Controls.Add(cmbFioCol);
+            gbTableSettings.Controls.Add(gbNameSettings);
             gbTableSettings.Controls.Add(btnSelectData);
-            gbTableSettings.Location = new Point(616, 21);
+            gbTableSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            gbTableSettings.Location = new Point(619, 21);
             gbTableSettings.Margin = new Padding(2);
             gbTableSettings.Name = "gbTableSettings";
             gbTableSettings.Padding = new Padding(2);
-            gbTableSettings.Size = new Size(232, 395);
+            gbTableSettings.Size = new Size(770, 402);
             gbTableSettings.TabIndex = 4;
             gbTableSettings.TabStop = false;
             gbTableSettings.Text = "Таблица";
@@ -323,15 +335,15 @@
             // lblGoogleStatus
             // 
             lblGoogleStatus.AutoSize = true;
-            lblGoogleStatus.Location = new Point(55, 150);
+            lblGoogleStatus.Location = new Point(54, 363);
             lblGoogleStatus.Name = "lblGoogleStatus";
-            lblGoogleStatus.Size = new Size(73, 15);
+            lblGoogleStatus.Size = new Size(78, 15);
             lblGoogleStatus.TabIndex = 24;
             lblGoogleStatus.Text = "Ожидание...";
             // 
             // btnLoadGoogleSheet
             // 
-            btnLoadGoogleSheet.Location = new Point(5, 118);
+            btnLoadGoogleSheet.Location = new Point(4, 233);
             btnLoadGoogleSheet.Name = "btnLoadGoogleSheet";
             btnLoadGoogleSheet.Size = new Size(191, 29);
             btnLoadGoogleSheet.TabIndex = 23;
@@ -341,7 +353,7 @@
             // 
             // txtGoogleSheetUrl
             // 
-            txtGoogleSheetUrl.Location = new Point(5, 89);
+            txtGoogleSheetUrl.Location = new Point(5, 190);
             txtGoogleSheetUrl.Name = "txtGoogleSheetUrl";
             txtGoogleSheetUrl.Size = new Size(191, 23);
             txtGoogleSheetUrl.TabIndex = 22;
@@ -349,21 +361,21 @@
             // lblGoogleHint
             // 
             lblGoogleHint.AutoSize = true;
-            lblGoogleHint.Location = new Point(5, 71);
+            lblGoogleHint.Location = new Point(8, 215);
             lblGoogleHint.Name = "lblGoogleHint";
-            lblGoogleHint.Size = new Size(159, 15);
+            lblGoogleHint.Size = new Size(188, 15);
             lblGoogleHint.TabIndex = 21;
-            lblGoogleHint.Text = "Ссылка на Google Таблицу ";
+            lblGoogleHint.Text = "Вставь ссылку Google Таблицу ";
             lblGoogleHint.TextAlign = ContentAlignment.MiddleCenter;
             lblGoogleHint.Visible = false;
             // 
             // lblSquadHint
             // 
             lblSquadHint.AutoSize = true;
-            lblSquadHint.Location = new Point(5, 348);
+            lblSquadHint.Location = new Point(567, 190);
             lblSquadHint.Margin = new Padding(2, 0, 2, 0);
             lblSquadHint.Name = "lblSquadHint";
-            lblSquadHint.Size = new Size(94, 15);
+            lblSquadHint.Size = new Size(98, 15);
             lblSquadHint.TabIndex = 20;
             lblSquadHint.Text = "Колонка отряда";
             // 
@@ -371,39 +383,282 @@
             // 
             cmbSquadCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSquadCol.FormattingEnabled = true;
-            cmbSquadCol.Location = new Point(5, 365);
+            cmbSquadCol.Location = new Point(567, 207);
             cmbSquadCol.Margin = new Padding(2);
             cmbSquadCol.Name = "cmbSquadCol";
-            cmbSquadCol.Size = new Size(184, 23);
+            cmbSquadCol.Size = new Size(162, 23);
             cmbSquadCol.TabIndex = 19;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label8);
+            groupBox1.Controls.Add(btnPlaceWorkshop);
+            groupBox1.Controls.Add(label9);
+            groupBox1.Controls.Add(numWorkshopSize);
+            groupBox1.Controls.Add(numWorkshopY);
+            groupBox1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox1.Location = new Point(570, 62);
+            groupBox1.Margin = new Padding(2);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(2);
+            groupBox1.Size = new Size(168, 126);
+            groupBox1.TabIndex = 4;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Параметры студии";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(57, 52);
+            label8.Name = "label8";
+            label8.Size = new Size(104, 15);
+            label8.TabIndex = 9;
+            label8.Text = "Размер шрифта";
+            // 
+            // btnPlaceWorkshop
+            // 
+            btnPlaceWorkshop.Location = new Point(19, 73);
+            btnPlaceWorkshop.Margin = new Padding(2);
+            btnPlaceWorkshop.Name = "btnPlaceWorkshop";
+            btnPlaceWorkshop.Size = new Size(140, 47);
+            btnPlaceWorkshop.TabIndex = 3;
+            btnPlaceWorkshop.Text = "Разместить название студии на картинке";
+            btnPlaceWorkshop.UseVisualStyleBackColor = true;
+            btnPlaceWorkshop.Click += btnPlaceWorkshop_Click;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(57, 23);
+            label9.Name = "label9";
+            label9.Size = new Size(70, 15);
+            label9.TabIndex = 8;
+            label9.Text = "По высоте";
+            // 
+            // numWorkshopSize
+            // 
+            numWorkshopSize.Location = new Point(4, 47);
+            numWorkshopSize.Margin = new Padding(2);
+            numWorkshopSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            numWorkshopSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            numWorkshopSize.Name = "numWorkshopSize";
+            numWorkshopSize.Size = new Size(48, 24);
+            numWorkshopSize.TabIndex = 2;
+            numWorkshopSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
+            // 
+            // numWorkshopY
+            // 
+            numWorkshopY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numWorkshopY.Location = new Point(4, 20);
+            numWorkshopY.Margin = new Padding(2);
+            numWorkshopY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numWorkshopY.Name = "numWorkshopY";
+            numWorkshopY.Size = new Size(48, 24);
+            numWorkshopY.TabIndex = 1;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(label2);
+            groupBox4.Controls.Add(label3);
+            groupBox4.Controls.Add(label4);
+            groupBox4.Controls.Add(btnPlaceSquad);
+            groupBox4.Controls.Add(numSquadSize);
+            groupBox4.Controls.Add(numSquadY);
+            groupBox4.Controls.Add(numSquadX);
+            groupBox4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox4.Location = new Point(567, 238);
+            groupBox4.Margin = new Padding(2);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Padding = new Padding(2);
+            groupBox4.Size = new Size(162, 151);
+            groupBox4.TabIndex = 13;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Параметры отряда";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(61, 78);
+            label2.Name = "label2";
+            label2.Size = new Size(104, 15);
+            label2.TabIndex = 9;
+            label2.Text = "Размер шрифта";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(61, 49);
+            label3.Name = "label3";
+            label3.Size = new Size(70, 15);
+            label3.TabIndex = 8;
+            label3.Text = "По высоте";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(61, 22);
+            label4.Name = "label4";
+            label4.Size = new Size(70, 15);
+            label4.TabIndex = 7;
+            label4.Text = "По ширине";
+            // 
+            // btnPlaceSquad
+            // 
+            btnPlaceSquad.Location = new Point(22, 101);
+            btnPlaceSquad.Margin = new Padding(2);
+            btnPlaceSquad.Name = "btnPlaceSquad";
+            btnPlaceSquad.Size = new Size(121, 47);
+            btnPlaceSquad.TabIndex = 3;
+            btnPlaceSquad.Text = "Разместить Отряд на картинке";
+            btnPlaceSquad.UseVisualStyleBackColor = true;
+            btnPlaceSquad.Click += btnPlaceSquad_Click;
+            // 
+            // numSquadSize
+            // 
+            numSquadSize.Location = new Point(4, 74);
+            numSquadSize.Margin = new Padding(2);
+            numSquadSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            numSquadSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            numSquadSize.Name = "numSquadSize";
+            numSquadSize.Size = new Size(48, 24);
+            numSquadSize.TabIndex = 2;
+            numSquadSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
+            // 
+            // numSquadY
+            // 
+            numSquadY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numSquadY.Location = new Point(4, 47);
+            numSquadY.Margin = new Padding(2);
+            numSquadY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numSquadY.Name = "numSquadY";
+            numSquadY.Size = new Size(48, 24);
+            numSquadY.TabIndex = 1;
+            // 
+            // numSquadX
+            // 
+            numSquadX.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numSquadX.Location = new Point(4, 20);
+            numSquadX.Margin = new Padding(2);
+            numSquadX.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numSquadX.Name = "numSquadX";
+            numSquadX.Size = new Size(48, 24);
+            numSquadX.TabIndex = 0;
             // 
             // lblLevelHint
             // 
             lblLevelHint.AutoSize = true;
-            lblLevelHint.Location = new Point(5, 305);
+            lblLevelHint.Location = new Point(217, 190);
             lblLevelHint.Margin = new Padding(2, 0, 2, 0);
             lblLevelHint.Name = "lblLevelHint";
-            lblLevelHint.Size = new Size(157, 15);
+            lblLevelHint.Size = new Size(166, 15);
             lblLevelHint.TabIndex = 18;
             lblLevelHint.Text = "Колонка уровеня освоения";
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(label1);
+            groupBox2.Controls.Add(numLevelYText);
+            groupBox2.Controls.Add(numLevelXText);
+            groupBox2.Controls.Add(btnPlaceLevel);
+            groupBox2.Controls.Add(numLevelSize);
+            groupBox2.Controls.Add(numLevelY);
+            groupBox2.Controls.Add(numLevelX);
+            groupBox2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox2.Location = new Point(217, 238);
+            groupBox2.Margin = new Padding(2);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(2);
+            groupBox2.Size = new Size(160, 160);
+            groupBox2.TabIndex = 5;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Параметры освоения";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(57, 78);
+            label1.Name = "label1";
+            label1.Size = new Size(104, 15);
+            label1.TabIndex = 6;
+            label1.Text = "Размер шрифта";
+            // 
+            // numLevelYText
+            // 
+            numLevelYText.AutoSize = true;
+            numLevelYText.Location = new Point(57, 49);
+            numLevelYText.Name = "numLevelYText";
+            numLevelYText.Size = new Size(70, 15);
+            numLevelYText.TabIndex = 5;
+            numLevelYText.Text = "По высоте";
+            // 
+            // numLevelXText
+            // 
+            numLevelXText.AutoSize = true;
+            numLevelXText.Location = new Point(57, 22);
+            numLevelXText.Name = "numLevelXText";
+            numLevelXText.Size = new Size(70, 15);
+            numLevelXText.TabIndex = 4;
+            numLevelXText.Text = "По ширине";
+            // 
+            // btnPlaceLevel
+            // 
+            btnPlaceLevel.Location = new Point(11, 101);
+            btnPlaceLevel.Margin = new Padding(2);
+            btnPlaceLevel.Name = "btnPlaceLevel";
+            btnPlaceLevel.Size = new Size(136, 56);
+            btnPlaceLevel.TabIndex = 3;
+            btnPlaceLevel.Text = "Разместить уровень освоения на картинке";
+            btnPlaceLevel.UseVisualStyleBackColor = true;
+            btnPlaceLevel.Click += btnPlaceLevel_Click;
+            // 
+            // numLevelSize
+            // 
+            numLevelSize.Location = new Point(4, 74);
+            numLevelSize.Margin = new Padding(2);
+            numLevelSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            numLevelSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            numLevelSize.Name = "numLevelSize";
+            numLevelSize.Size = new Size(48, 24);
+            numLevelSize.TabIndex = 2;
+            numLevelSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
+            // 
+            // numLevelY
+            // 
+            numLevelY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numLevelY.Location = new Point(4, 47);
+            numLevelY.Margin = new Padding(2);
+            numLevelY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numLevelY.Name = "numLevelY";
+            numLevelY.Size = new Size(48, 24);
+            numLevelY.TabIndex = 1;
+            // 
+            // numLevelX
+            // 
+            numLevelX.Increment = new decimal(new int[] { 10, 0, 0, 0 });
+            numLevelX.Location = new Point(4, 20);
+            numLevelX.Margin = new Padding(2);
+            numLevelX.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            numLevelX.Name = "numLevelX";
+            numLevelX.Size = new Size(48, 24);
+            numLevelX.TabIndex = 0;
             // 
             // cmbLevelCol
             // 
             cmbLevelCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbLevelCol.FormattingEnabled = true;
-            cmbLevelCol.Location = new Point(5, 322);
+            cmbLevelCol.Location = new Point(217, 207);
             cmbLevelCol.Margin = new Padding(2);
             cmbLevelCol.Name = "cmbLevelCol";
-            cmbLevelCol.Size = new Size(184, 23);
+            cmbLevelCol.Size = new Size(146, 23);
             cmbLevelCol.TabIndex = 17;
             // 
             // lblWorkshopHint
             // 
             lblWorkshopHint.AutoSize = true;
-            lblWorkshopHint.Location = new Point(5, 263);
+            lblWorkshopHint.Location = new Point(567, 18);
             lblWorkshopHint.Margin = new Padding(2, 0, 2, 0);
             lblWorkshopHint.Name = "lblWorkshopHint";
-            lblWorkshopHint.Size = new Size(95, 15);
+            lblWorkshopHint.Size = new Size(98, 15);
             lblWorkshopHint.TabIndex = 16;
             lblWorkshopHint.Text = "Колонка Студия";
             // 
@@ -411,40 +666,39 @@
             // 
             cmbWorkshopCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWorkshopCol.FormattingEnabled = true;
-            cmbWorkshopCol.Location = new Point(5, 280);
+            cmbWorkshopCol.Location = new Point(567, 35);
             cmbWorkshopCol.Margin = new Padding(2);
             cmbWorkshopCol.Name = "cmbWorkshopCol";
-            cmbWorkshopCol.Size = new Size(184, 23);
+            cmbWorkshopCol.Size = new Size(160, 23);
             cmbWorkshopCol.TabIndex = 15;
-            cmbWorkshopCol.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // lblDataInfo
             // 
             lblDataInfo.AutoSize = true;
-            lblDataInfo.Location = new Point(90, 33);
+            lblDataInfo.Location = new Point(277, 473);
             lblDataInfo.Margin = new Padding(2, 0, 2, 0);
             lblDataInfo.Name = "lblDataInfo";
-            lblDataInfo.Size = new Size(130, 15);
+            lblDataInfo.Size = new Size(135, 15);
             lblDataInfo.TabIndex = 11;
             lblDataInfo.Text = "Таблица не загружена";
             // 
             // lblRegHint
             // 
             lblRegHint.AutoSize = true;
-            lblRegHint.Location = new Point(5, 217);
+            lblRegHint.Location = new Point(391, 18);
             lblRegHint.Margin = new Padding(2, 0, 2, 0);
             lblRegHint.Name = "lblRegHint";
-            lblRegHint.Size = new Size(96, 15);
+            lblRegHint.Size = new Size(100, 15);
             lblRegHint.TabIndex = 14;
             lblRegHint.Text = "Колонка Регион";
             // 
             // lblFioHint
             // 
             lblFioHint.AutoSize = true;
-            lblFioHint.Location = new Point(5, 172);
+            lblFioHint.Location = new Point(217, 18);
             lblFioHint.Margin = new Padding(2, 0, 2, 0);
             lblFioHint.Name = "lblFioHint";
-            lblFioHint.Size = new Size(84, 15);
+            lblFioHint.Size = new Size(87, 15);
             lblFioHint.TabIndex = 13;
             lblFioHint.Text = "Колонка ФИО";
             // 
@@ -452,59 +706,64 @@
             // 
             cmbRegCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRegCol.FormattingEnabled = true;
-            cmbRegCol.Location = new Point(5, 237);
+            cmbRegCol.Location = new Point(391, 35);
             cmbRegCol.Margin = new Padding(2);
             cmbRegCol.Name = "cmbRegCol";
-            cmbRegCol.Size = new Size(184, 23);
+            cmbRegCol.Size = new Size(162, 23);
             cmbRegCol.TabIndex = 4;
             // 
             // cmbFioCol
             // 
             cmbFioCol.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFioCol.FormattingEnabled = true;
-            cmbFioCol.Location = new Point(5, 189);
+            cmbFioCol.Location = new Point(217, 35);
             cmbFioCol.Margin = new Padding(2);
             cmbFioCol.Name = "cmbFioCol";
-            cmbFioCol.Size = new Size(184, 23);
+            cmbFioCol.Size = new Size(162, 23);
             cmbFioCol.TabIndex = 3;
             // 
             // btnSelectData
             // 
-            btnSelectData.Location = new Point(4, 19);
+            btnSelectData.Location = new Point(31, 42);
             btnSelectData.Margin = new Padding(2);
             btnSelectData.Name = "btnSelectData";
-            btnSelectData.Size = new Size(82, 42);
+            btnSelectData.Size = new Size(125, 57);
             btnSelectData.TabIndex = 7;
-            btnSelectData.Text = "Выбрать таблицу";
+            btnSelectData.Text = "Выбрать таблицу на диске";
             btnSelectData.UseVisualStyleBackColor = true;
             btnSelectData.Click += btnSelectData_Click;
             // 
             // btnSelectBg
             // 
-            btnSelectBg.Location = new Point(616, 420);
+            btnSelectBg.BackColor = SystemColors.GradientActiveCaption;
+            btnSelectBg.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            btnSelectBg.ForeColor = SystemColors.ActiveCaptionText;
+            btnSelectBg.Location = new Point(619, 465);
             btnSelectBg.Margin = new Padding(2);
             btnSelectBg.Name = "btnSelectBg";
             btnSelectBg.Size = new Size(128, 55);
             btnSelectBg.TabIndex = 5;
             btnSelectBg.Text = "Загрузить подложку";
-            btnSelectBg.UseVisualStyleBackColor = true;
+            btnSelectBg.UseVisualStyleBackColor = false;
             btnSelectBg.Click += btnSelectBg_Click;
             // 
             // btnGenerate
             // 
-            btnGenerate.Location = new Point(616, 549);
+            btnGenerate.BackColor = SystemColors.GradientActiveCaption;
+            btnGenerate.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            btnGenerate.Location = new Point(1390, 675);
             btnGenerate.Margin = new Padding(2);
             btnGenerate.Name = "btnGenerate";
             btnGenerate.Size = new Size(128, 51);
             btnGenerate.TabIndex = 9;
             btnGenerate.Text = "Создать PDF";
-            btnGenerate.UseVisualStyleBackColor = true;
+            btnGenerate.UseVisualStyleBackColor = false;
             btnGenerate.Click += btnGenerate_Click;
             // 
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(616, 617);
+            lblStatus.Location = new Point(1393, 756);
             lblStatus.Margin = new Padding(2, 0, 2, 0);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(38, 15);
@@ -521,7 +780,8 @@
             // 
             // btnPlaceHours
             // 
-            btnPlaceHours.Location = new Point(4, 130);
+            btnPlaceHours.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnPlaceHours.Location = new Point(43, 130);
             btnPlaceHours.Margin = new Padding(2);
             btnPlaceHours.Name = "btnPlaceHours";
             btnPlaceHours.Size = new Size(98, 50);
@@ -532,6 +792,7 @@
             // 
             // groupBox3
             // 
+            groupBox3.BackColor = SystemColors.GradientActiveCaption;
             groupBox3.Controls.Add(label14);
             groupBox3.Controls.Add(label11);
             groupBox3.Controls.Add(numHoursSize);
@@ -541,11 +802,12 @@
             groupBox3.Controls.Add(txtHours);
             groupBox3.Controls.Add(numHoursY);
             groupBox3.Controls.Add(numHoursX);
-            groupBox3.Location = new Point(1378, 225);
+            groupBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox3.Location = new Point(1393, 22);
             groupBox3.Margin = new Padding(2);
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new Padding(2);
-            groupBox3.Size = new Size(169, 187);
+            groupBox3.Size = new Size(182, 187);
             groupBox3.TabIndex = 5;
             groupBox3.TabStop = false;
             groupBox3.Text = "Количество часов";
@@ -553,18 +815,20 @@
             // label14
             // 
             label14.AutoSize = true;
+            label14.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label14.Location = new Point(57, 25);
             label14.Name = "label14";
-            label14.Size = new Size(107, 15);
+            label14.Size = new Size(113, 15);
             label14.TabIndex = 16;
             label14.Text = "Количество часов";
             // 
             // label11
             // 
             label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label11.Location = new Point(57, 111);
             label11.Name = "label11";
-            label11.Size = new Size(95, 15);
+            label11.Size = new Size(104, 15);
             label11.TabIndex = 12;
             label11.Text = "Размер шрифта";
             // 
@@ -582,18 +846,20 @@
             // label12
             // 
             label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label12.Location = new Point(57, 82);
             label12.Name = "label12";
-            label12.Size = new Size(65, 15);
+            label12.Size = new Size(70, 15);
             label12.TabIndex = 11;
             label12.Text = "По высоте";
             // 
             // label13
             // 
             label13.AutoSize = true;
+            label13.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label13.Location = new Point(57, 55);
             label13.Name = "label13";
-            label13.Size = new Size(71, 15);
+            label13.Size = new Size(70, 15);
             label13.TabIndex = 10;
             label13.Text = "По ширине";
             // 
@@ -617,251 +883,11 @@
             numHoursX.Size = new Size(48, 23);
             numHoursX.TabIndex = 0;
             // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(label8);
-            groupBox1.Controls.Add(btnPlaceWorkshop);
-            groupBox1.Controls.Add(label9);
-            groupBox1.Controls.Add(numWorkshopSize);
-            groupBox1.Controls.Add(numWorkshopY);
-            groupBox1.Location = new Point(1194, 21);
-            groupBox1.Margin = new Padding(2);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(2);
-            groupBox1.Size = new Size(155, 126);
-            groupBox1.TabIndex = 4;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Параметры студии";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(57, 52);
-            label8.Name = "label8";
-            label8.Size = new Size(95, 15);
-            label8.TabIndex = 9;
-            label8.Text = "Размер шрифта";
-            // 
-            // btnPlaceWorkshop
-            // 
-            btnPlaceWorkshop.Location = new Point(4, 71);
-            btnPlaceWorkshop.Margin = new Padding(2);
-            btnPlaceWorkshop.Name = "btnPlaceWorkshop";
-            btnPlaceWorkshop.Size = new Size(140, 47);
-            btnPlaceWorkshop.TabIndex = 3;
-            btnPlaceWorkshop.Text = "Разместить название студии на картинке";
-            btnPlaceWorkshop.UseVisualStyleBackColor = true;
-            btnPlaceWorkshop.Click += btnPlaceWorkshop_Click;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(57, 23);
-            label9.Name = "label9";
-            label9.Size = new Size(65, 15);
-            label9.TabIndex = 8;
-            label9.Text = "По высоте";
-            // 
-            // numWorkshopSize
-            // 
-            numWorkshopSize.Location = new Point(4, 47);
-            numWorkshopSize.Margin = new Padding(2);
-            numWorkshopSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
-            numWorkshopSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
-            numWorkshopSize.Name = "numWorkshopSize";
-            numWorkshopSize.Size = new Size(48, 23);
-            numWorkshopSize.TabIndex = 2;
-            numWorkshopSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
-            // 
-            // numWorkshopY
-            // 
-            numWorkshopY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numWorkshopY.Location = new Point(4, 20);
-            numWorkshopY.Margin = new Padding(2);
-            numWorkshopY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numWorkshopY.Name = "numWorkshopY";
-            numWorkshopY.Size = new Size(48, 23);
-            numWorkshopY.TabIndex = 1;
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(label1);
-            groupBox2.Controls.Add(numLevelYText);
-            groupBox2.Controls.Add(numLevelXText);
-            groupBox2.Controls.Add(btnPlaceLevel);
-            groupBox2.Controls.Add(numLevelSize);
-            groupBox2.Controls.Add(numLevelY);
-            groupBox2.Controls.Add(numLevelX);
-            groupBox2.Location = new Point(866, 178);
-            groupBox2.Margin = new Padding(2);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(2);
-            groupBox2.Size = new Size(160, 151);
-            groupBox2.TabIndex = 5;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Параметры освоения";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(57, 78);
-            label1.Name = "label1";
-            label1.Size = new Size(95, 15);
-            label1.TabIndex = 6;
-            label1.Text = "Размер шрифта";
-            // 
-            // numLevelYText
-            // 
-            numLevelYText.AutoSize = true;
-            numLevelYText.Location = new Point(57, 49);
-            numLevelYText.Name = "numLevelYText";
-            numLevelYText.Size = new Size(65, 15);
-            numLevelYText.TabIndex = 5;
-            numLevelYText.Text = "По высоте";
-            // 
-            // numLevelXText
-            // 
-            numLevelXText.AutoSize = true;
-            numLevelXText.Location = new Point(57, 22);
-            numLevelXText.Name = "numLevelXText";
-            numLevelXText.Size = new Size(71, 15);
-            numLevelXText.TabIndex = 4;
-            numLevelXText.Text = "По ширине";
-            // 
-            // btnPlaceLevel
-            // 
-            btnPlaceLevel.Location = new Point(0, 101);
-            btnPlaceLevel.Margin = new Padding(2);
-            btnPlaceLevel.Name = "btnPlaceLevel";
-            btnPlaceLevel.Size = new Size(136, 47);
-            btnPlaceLevel.TabIndex = 3;
-            btnPlaceLevel.Text = "Разместить уровень освоения на картинке";
-            btnPlaceLevel.UseVisualStyleBackColor = true;
-            btnPlaceLevel.Click += btnPlaceLevel_Click;
-            // 
-            // numLevelSize
-            // 
-            numLevelSize.Location = new Point(4, 74);
-            numLevelSize.Margin = new Padding(2);
-            numLevelSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
-            numLevelSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
-            numLevelSize.Name = "numLevelSize";
-            numLevelSize.Size = new Size(48, 23);
-            numLevelSize.TabIndex = 2;
-            numLevelSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
-            // 
-            // numLevelY
-            // 
-            numLevelY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numLevelY.Location = new Point(4, 47);
-            numLevelY.Margin = new Padding(2);
-            numLevelY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numLevelY.Name = "numLevelY";
-            numLevelY.Size = new Size(48, 23);
-            numLevelY.TabIndex = 1;
-            // 
-            // numLevelX
-            // 
-            numLevelX.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numLevelX.Location = new Point(4, 20);
-            numLevelX.Margin = new Padding(2);
-            numLevelX.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numLevelX.Name = "numLevelX";
-            numLevelX.Size = new Size(48, 23);
-            numLevelX.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(label2);
-            groupBox4.Controls.Add(label3);
-            groupBox4.Controls.Add(label4);
-            groupBox4.Controls.Add(btnPlaceSquad);
-            groupBox4.Controls.Add(numSquadSize);
-            groupBox4.Controls.Add(numSquadY);
-            groupBox4.Controls.Add(numSquadX);
-            groupBox4.Location = new Point(1071, 178);
-            groupBox4.Margin = new Padding(2);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Padding = new Padding(2);
-            groupBox4.Size = new Size(162, 151);
-            groupBox4.TabIndex = 13;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Параметры отряда";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(61, 78);
-            label2.Name = "label2";
-            label2.Size = new Size(95, 15);
-            label2.TabIndex = 9;
-            label2.Text = "Размер шрифта";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(61, 49);
-            label3.Name = "label3";
-            label3.Size = new Size(65, 15);
-            label3.TabIndex = 8;
-            label3.Text = "По высоте";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(61, 22);
-            label4.Name = "label4";
-            label4.Size = new Size(71, 15);
-            label4.TabIndex = 7;
-            label4.Text = "По ширине";
-            // 
-            // btnPlaceSquad
-            // 
-            btnPlaceSquad.Location = new Point(4, 101);
-            btnPlaceSquad.Margin = new Padding(2);
-            btnPlaceSquad.Name = "btnPlaceSquad";
-            btnPlaceSquad.Size = new Size(121, 47);
-            btnPlaceSquad.TabIndex = 3;
-            btnPlaceSquad.Text = "Разместить Отряд на картинке";
-            btnPlaceSquad.UseVisualStyleBackColor = true;
-            btnPlaceSquad.Click += btnPlaceSquad_Click;
-            // 
-            // numSquadSize
-            // 
-            numSquadSize.Location = new Point(4, 74);
-            numSquadSize.Margin = new Padding(2);
-            numSquadSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
-            numSquadSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
-            numSquadSize.Name = "numSquadSize";
-            numSquadSize.Size = new Size(48, 23);
-            numSquadSize.TabIndex = 2;
-            numSquadSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
-            // 
-            // numSquadY
-            // 
-            numSquadY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numSquadY.Location = new Point(4, 47);
-            numSquadY.Margin = new Padding(2);
-            numSquadY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numSquadY.Name = "numSquadY";
-            numSquadY.Size = new Size(48, 23);
-            numSquadY.TabIndex = 1;
-            // 
-            // numSquadX
-            // 
-            numSquadX.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numSquadX.Location = new Point(4, 20);
-            numSquadX.Margin = new Padding(2);
-            numSquadX.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
-            numSquadX.Name = "numSquadX";
-            numSquadX.Size = new Size(48, 23);
-            numSquadX.TabIndex = 0;
-            // 
             // pnlGlobalColor
             // 
             pnlGlobalColor.BackColor = SystemColors.ActiveCaptionText;
             pnlGlobalColor.BorderStyle = BorderStyle.FixedSingle;
-            pnlGlobalColor.Location = new Point(616, 514);
+            pnlGlobalColor.Location = new Point(18, 81);
             pnlGlobalColor.Name = "pnlGlobalColor";
             pnlGlobalColor.Size = new Size(30, 30);
             pnlGlobalColor.TabIndex = 14;
@@ -869,9 +895,10 @@
             // btnGlobalPipette
             // 
             btnGlobalPipette.AutoSize = true;
-            btnGlobalPipette.Location = new Point(652, 516);
+            btnGlobalPipette.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnGlobalPipette.Location = new Point(7, 117);
             btnGlobalPipette.Name = "btnGlobalPipette";
-            btnGlobalPipette.Size = new Size(138, 28);
+            btnGlobalPipette.Size = new Size(159, 28);
             btnGlobalPipette.TabIndex = 15;
             btnGlobalPipette.Text = "💧 Взять цвет с макета";
             btnGlobalPipette.UseVisualStyleBackColor = true;
@@ -879,6 +906,7 @@
             // 
             // groupBox5
             // 
+            groupBox5.BackColor = SystemColors.GradientActiveCaption;
             groupBox5.Controls.Add(lblDateHint);
             groupBox5.Controls.Add(label19);
             groupBox5.Controls.Add(numDateSize);
@@ -888,11 +916,12 @@
             groupBox5.Controls.Add(txtDate);
             groupBox5.Controls.Add(numDateY);
             groupBox5.Controls.Add(numDateX);
-            groupBox5.Location = new Point(1378, 21);
+            groupBox5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox5.Location = new Point(1397, 236);
             groupBox5.Margin = new Padding(2);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(2);
-            groupBox5.Size = new Size(169, 187);
+            groupBox5.Size = new Size(179, 187);
             groupBox5.TabIndex = 17;
             groupBox5.TabStop = false;
             groupBox5.Text = "Дата";
@@ -900,18 +929,20 @@
             // lblDateHint
             // 
             lblDateHint.AutoSize = true;
+            lblDateHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             lblDateHint.Location = new Point(87, 25);
             lblDateHint.Name = "lblDateHint";
-            lblDateHint.Size = new Size(74, 15);
+            lblDateHint.Size = new Size(91, 15);
             lblDateHint.TabIndex = 16;
             lblDateHint.Text = "Указать дату";
             // 
             // label19
             // 
             label19.AutoSize = true;
+            label19.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label19.Location = new Point(56, 110);
             label19.Name = "label19";
-            label19.Size = new Size(95, 15);
+            label19.Size = new Size(104, 15);
             label19.TabIndex = 12;
             label19.Text = "Размер шрифта";
             // 
@@ -929,15 +960,17 @@
             // label20
             // 
             label20.AutoSize = true;
+            label20.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label20.Location = new Point(56, 81);
             label20.Name = "label20";
-            label20.Size = new Size(65, 15);
+            label20.Size = new Size(70, 15);
             label20.TabIndex = 11;
             label20.Text = "По высоте";
             // 
             // btnPlaceDate
             // 
-            btnPlaceDate.Location = new Point(4, 130);
+            btnPlaceDate.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnPlaceDate.Location = new Point(39, 130);
             btnPlaceDate.Margin = new Padding(2);
             btnPlaceDate.Name = "btnPlaceDate";
             btnPlaceDate.Size = new Size(98, 50);
@@ -949,9 +982,10 @@
             // label21
             // 
             label21.AutoSize = true;
+            label21.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label21.Location = new Point(56, 54);
             label21.Name = "label21";
-            label21.Size = new Size(71, 15);
+            label21.Size = new Size(70, 15);
             label21.TabIndex = 10;
             label21.Text = "По ширине";
             // 
@@ -987,24 +1021,26 @@
             // 
             cmbFontSelector.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFontSelector.FormattingEnabled = true;
-            cmbFontSelector.Location = new Point(616, 485);
+            cmbFontSelector.Location = new Point(6, 22);
             cmbFontSelector.MaxDropDownItems = 15;
             cmbFontSelector.Name = "cmbFontSelector";
-            cmbFontSelector.Size = new Size(121, 23);
+            cmbFontSelector.Size = new Size(170, 23);
             cmbFontSelector.TabIndex = 18;
             cmbFontSelector.SelectedIndexChanged += cmbFontSelector_SelectedIndexChanged;
             // 
             // lblFontStatus
             // 
             lblFontStatus.AutoSize = true;
-            lblFontStatus.Location = new Point(745, 488);
+            lblFontStatus.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            lblFontStatus.Location = new Point(6, 48);
             lblFontStatus.Name = "lblFontStatus";
-            lblFontStatus.Size = new Size(107, 15);
+            lblFontStatus.Size = new Size(115, 15);
             lblFontStatus.TabIndex = 19;
             lblFontStatus.Text = "Шрифт не выбран";
             // 
             // groupBox6
             // 
+            groupBox6.BackColor = SystemColors.GradientActiveCaption;
             groupBox6.Controls.Add(label17);
             groupBox6.Controls.Add(txtMainText);
             groupBox6.Controls.Add(numMainTextWidth);
@@ -1014,7 +1050,8 @@
             groupBox6.Controls.Add(btnPlaceMainText);
             groupBox6.Controls.Add(numMainTextSize);
             groupBox6.Controls.Add(label23);
-            groupBox6.Location = new Point(927, 355);
+            groupBox6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox6.Location = new Point(917, 436);
             groupBox6.Name = "groupBox6";
             groupBox6.Size = new Size(382, 363);
             groupBox6.TabIndex = 20;
@@ -1024,9 +1061,10 @@
             // label17
             // 
             label17.AutoSize = true;
+            label17.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label17.Location = new Point(73, 299);
             label17.Name = "label17";
-            label17.Size = new Size(124, 15);
+            label17.Size = new Size(127, 15);
             label17.TabIndex = 22;
             label17.Text = "Занимаемая ширина";
             // 
@@ -1055,18 +1093,20 @@
             // lblMainTextHint
             // 
             lblMainTextHint.AutoSize = true;
-            lblMainTextHint.Location = new Point(0, 22);
+            lblMainTextHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            lblMainTextHint.Location = new Point(6, 20);
             lblMainTextHint.Name = "lblMainTextHint";
-            lblMainTextHint.Size = new Size(284, 15);
+            lblMainTextHint.Size = new Size(307, 15);
             lblMainTextHint.TabIndex = 0;
             lblMainTextHint.Text = "Основной текст благодарности (многострочный):";
             // 
             // label22
             // 
             label22.AutoSize = true;
+            label22.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label22.Location = new Point(73, 324);
             label22.Name = "label22";
-            label22.Size = new Size(95, 15);
+            label22.Size = new Size(104, 15);
             label22.TabIndex = 21;
             label22.Text = "Размер шрифта";
             // 
@@ -1083,6 +1123,7 @@
             // 
             // btnPlaceMainText
             // 
+            btnPlaceMainText.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             btnPlaceMainText.Location = new Point(217, 275);
             btnPlaceMainText.Margin = new Padding(2);
             btnPlaceMainText.Name = "btnPlaceMainText";
@@ -1106,34 +1147,53 @@
             // label23
             // 
             label23.AutoSize = true;
+            label23.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
             label23.Location = new Point(73, 270);
             label23.Name = "label23";
-            label23.Size = new Size(65, 15);
+            label23.Size = new Size(70, 15);
             label23.TabIndex = 20;
             label23.Text = "По высоте";
+            // 
+            // groupBox7
+            // 
+            groupBox7.BackColor = SystemColors.GradientActiveCaption;
+            groupBox7.Controls.Add(label7);
+            groupBox7.Controls.Add(cmbFontSelector);
+            groupBox7.Controls.Add(lblFontStatus);
+            groupBox7.Controls.Add(pnlGlobalColor);
+            groupBox7.Controls.Add(btnGlobalPipette);
+            groupBox7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            groupBox7.Location = new Point(619, 563);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new Size(200, 163);
+            groupBox7.TabIndex = 22;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Шрифты";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label7.Location = new Point(54, 96);
+            label7.Name = "label7";
+            label7.Size = new Size(39, 15);
+            label7.TabIndex = 20;
+            label7.Text = "Цвет";
             // 
             // lblHours
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            ClientSize = new Size(1568, 810);
+            ClientSize = new Size(1580, 810);
+            Controls.Add(groupBox7);
             Controls.Add(groupBox6);
-            Controls.Add(lblFontStatus);
-            Controls.Add(cmbFontSelector);
             Controls.Add(groupBox5);
-            Controls.Add(btnGlobalPipette);
-            Controls.Add(pnlGlobalColor);
-            Controls.Add(groupBox4);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            Controls.Add(groupBox3);
             Controls.Add(lblStatus);
             Controls.Add(btnGenerate);
+            Controls.Add(groupBox3);
             Controls.Add(btnSelectBg);
             Controls.Add(gbTableSettings);
-            Controls.Add(gbRegionSettings);
-            Controls.Add(gbNameSettings);
             Controls.Add(pbPreview);
             Margin = new Padding(2);
             Name = "lblHours";
@@ -1150,25 +1210,25 @@
             ((System.ComponentModel.ISupportInitialize)numRegY).EndInit();
             gbTableSettings.ResumeLayout(false);
             gbTableSettings.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numHoursSize).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numHoursY).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numHoursX).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numWorkshopSize).EndInit();
             ((System.ComponentModel.ISupportInitialize)numWorkshopY).EndInit();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numLevelSize).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numLevelY).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numLevelX).EndInit();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numSquadSize).EndInit();
             ((System.ComponentModel.ISupportInitialize)numSquadY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numSquadX).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numLevelSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numLevelY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numLevelX).EndInit();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numHoursSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numHoursY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numHoursX).EndInit();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numDateSize).EndInit();
@@ -1179,6 +1239,8 @@
             ((System.ComponentModel.ISupportInitialize)numMainTextWidth).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMainTextY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMainTextSize).EndInit();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1274,5 +1336,7 @@
         private Label lblGoogleHint;
         private Button btnLoadGoogleSheet;
         private Label lblGoogleStatus;
+        private GroupBox groupBox7;
+        private Label label7;
     }
 }

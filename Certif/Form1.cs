@@ -149,7 +149,7 @@ namespace Certif
                 string lower = colName.ToLower();
                 if (lower.Contains("фио") || lower.Contains("имя") || lower.Contains("фамилия")) cmbFioCol.SelectedItem = colName;
                 if (lower.Contains("регион") || lower.Contains("город") || lower.Contains("область")) cmbRegCol.SelectedItem = colName;
-                if (lower.Contains("мастерская") || lower.Contains("студия") || lower.Contains("цех") || lower.Contains("лаборатория")) cmbWorkshopCol.SelectedItem = colName;
+                if (lower.Contains("мастерская") || lower.Contains("студии") || lower.Contains("цех") || lower.Contains("лаборатория")) cmbWorkshopCol.SelectedItem = colName;
                 if (lower.Contains("уровень") || lower.Contains("квалификация") || lower.Contains("разряд") || lower.Contains("класс")) cmbLevelCol.SelectedItem = colName;
                 if (lower.Contains("отряд") || lower.Contains("команда") || lower.Contains("группа") || lower.Contains("смена")) cmbSquadCol.SelectedItem = colName;
             }
@@ -553,6 +553,7 @@ namespace Certif
                                             if (cmbRegCol.SelectedItem?.ToString() != SKIP_OPTION)
                                             {
                                                 string regText = row[cmbRegCol.SelectedItem.ToString()].ToString();
+                                                regText = $"({regText})";
                                                 SizeF regSize = g.MeasureString(regText, fontReg);
                                                 float regX = Math.Max(0, (backgroundImage.Width - regSize.Width) / 2f);
                                                 g.DrawString(regText, fontReg, textBrush, regX, (float)numRegY.Value);
@@ -815,12 +816,7 @@ namespace Certif
             pbPreview.Cursor = Cursors.Cross;
             lblStatus.Text = "🎯 Кликните по изображению, чтобы задать высоту для 'Количества часов'";
         }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void btnPlaceWorkshop_Click(object sender, EventArgs e)
         {
             if (backgroundImage == null)
