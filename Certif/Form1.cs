@@ -816,7 +816,7 @@ namespace Certif
             pbPreview.Cursor = Cursors.Cross;
             lblStatus.Text = "🎯 Кликните по изображению, чтобы задать высоту для 'Количества часов'";
         }
-      
+
         private void btnPlaceWorkshop_Click(object sender, EventArgs e)
         {
             if (backgroundImage == null)
@@ -1049,6 +1049,7 @@ namespace Certif
                 lblGoogleStatus.Text = "❌ Ошибка обработки";
             }
         }
+     
     }
 
 
