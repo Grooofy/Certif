@@ -108,6 +108,8 @@
             cmbFontSelector = new ComboBox();
             lblFontStatus = new Label();
             groupBox6 = new GroupBox();
+            label10 = new Label();
+            cmbMainTextSource = new ComboBox();
             label17 = new Label();
             txtMainText = new TextBox();
             numMainTextWidth = new NumericUpDown();
@@ -119,6 +121,11 @@
             label23 = new Label();
             groupBox7 = new GroupBox();
             label7 = new Label();
+            lblPresetsHint = new Label();
+            cmbPresets = new ComboBox();
+            btnRefreshPresets = new Button();
+            btnSavePreset = new Button();
+            btnDeletePreset = new Button();
             ((System.ComponentModel.ISupportInitialize)pbPreview).BeginInit();
             gbNameSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFioSize).BeginInit();
@@ -170,7 +177,7 @@
             gbNameSettings.Controls.Add(label16);
             gbNameSettings.Controls.Add(numFioSize);
             gbNameSettings.Controls.Add(numFioY);
-            gbNameSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            gbNameSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             gbNameSettings.Location = new Point(310, 103);
             gbNameSettings.Name = "gbNameSettings";
             gbNameSettings.Size = new Size(243, 210);
@@ -235,7 +242,7 @@
             gbRegionSettings.Controls.Add(label6);
             gbRegionSettings.Controls.Add(numRegSize);
             gbRegionSettings.Controls.Add(numRegY);
-            gbRegionSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            gbRegionSettings.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             gbRegionSettings.Location = new Point(559, 103);
             gbRegionSettings.Name = "gbRegionSettings";
             gbRegionSettings.Size = new Size(231, 238);
@@ -317,7 +324,7 @@
             gbTableSettings.Controls.Add(cmbFioCol);
             gbTableSettings.Controls.Add(gbNameSettings);
             gbTableSettings.Controls.Add(btnSelectData);
-            gbTableSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            gbTableSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             gbTableSettings.Location = new Point(884, 35);
             gbTableSettings.Name = "gbTableSettings";
             gbTableSettings.Size = new Size(1100, 670);
@@ -392,7 +399,7 @@
             groupBox1.Controls.Add(label9);
             groupBox1.Controls.Add(numWorkshopSize);
             groupBox1.Controls.Add(numWorkshopY);
-            groupBox1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             groupBox1.Location = new Point(814, 103);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(240, 210);
@@ -459,7 +466,7 @@
             groupBox4.Controls.Add(numSquadSize);
             groupBox4.Controls.Add(numSquadY);
             groupBox4.Controls.Add(numSquadX);
-            groupBox4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             groupBox4.Location = new Point(810, 397);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(231, 252);
@@ -554,7 +561,7 @@
             groupBox2.Controls.Add(numLevelSize);
             groupBox2.Controls.Add(numLevelY);
             groupBox2.Controls.Add(numLevelX);
-            groupBox2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 204);
+            groupBox2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             groupBox2.Location = new Point(310, 397);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(229, 267);
@@ -717,7 +724,7 @@
             // btnSelectBg
             // 
             btnSelectBg.BackColor = Color.YellowGreen;
-            btnSelectBg.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            btnSelectBg.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnSelectBg.ForeColor = SystemColors.ActiveCaptionText;
             btnSelectBg.Location = new Point(928, 774);
             btnSelectBg.Name = "btnSelectBg";
@@ -730,7 +737,7 @@
             // btnGenerate
             // 
             btnGenerate.BackColor = Color.DarkOrange;
-            btnGenerate.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            btnGenerate.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             btnGenerate.Location = new Point(1986, 1125);
             btnGenerate.Name = "btnGenerate";
             btnGenerate.Size = new Size(183, 85);
@@ -742,7 +749,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(1990, 1260);
+            lblStatus.Location = new Point(1902, 1259);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(59, 25);
             lblStatus.TabIndex = 12;
@@ -758,7 +765,7 @@
             // btnPlaceHours
             // 
             btnPlaceHours.BackColor = Color.MistyRose;
-            btnPlaceHours.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnPlaceHours.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             btnPlaceHours.Location = new Point(61, 217);
             btnPlaceHours.Name = "btnPlaceHours";
             btnPlaceHours.Size = new Size(140, 83);
@@ -779,7 +786,7 @@
             groupBox3.Controls.Add(txtHours);
             groupBox3.Controls.Add(numHoursY);
             groupBox3.Controls.Add(numHoursX);
-            groupBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox3.Location = new Point(1990, 37);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(260, 312);
@@ -790,7 +797,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label14.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label14.Location = new Point(81, 42);
             label14.Margin = new Padding(4, 0, 4, 0);
             label14.Name = "label14";
@@ -801,7 +808,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label11.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label11.Location = new Point(81, 185);
             label11.Margin = new Padding(4, 0, 4, 0);
             label11.Name = "label11";
@@ -822,7 +829,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label12.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label12.Location = new Point(81, 137);
             label12.Margin = new Padding(4, 0, 4, 0);
             label12.Name = "label12";
@@ -833,7 +840,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label13.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label13.Location = new Point(81, 92);
             label13.Margin = new Padding(4, 0, 4, 0);
             label13.Name = "label13";
@@ -873,7 +880,7 @@
             // 
             btnGlobalPipette.AutoSize = true;
             btnGlobalPipette.BackColor = Color.MistyRose;
-            btnGlobalPipette.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnGlobalPipette.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             btnGlobalPipette.Location = new Point(10, 195);
             btnGlobalPipette.Margin = new Padding(4, 5, 4, 5);
             btnGlobalPipette.Name = "btnGlobalPipette";
@@ -895,7 +902,7 @@
             groupBox5.Controls.Add(txtDate);
             groupBox5.Controls.Add(numDateY);
             groupBox5.Controls.Add(numDateX);
-            groupBox5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox5.Location = new Point(1996, 393);
             groupBox5.Name = "groupBox5";
             groupBox5.Size = new Size(256, 312);
@@ -906,7 +913,7 @@
             // lblDateHint
             // 
             lblDateHint.AutoSize = true;
-            lblDateHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            lblDateHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             lblDateHint.Location = new Point(124, 42);
             lblDateHint.Margin = new Padding(4, 0, 4, 0);
             lblDateHint.Name = "lblDateHint";
@@ -917,7 +924,7 @@
             // label19
             // 
             label19.AutoSize = true;
-            label19.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label19.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label19.Location = new Point(80, 183);
             label19.Margin = new Padding(4, 0, 4, 0);
             label19.Name = "label19";
@@ -938,7 +945,7 @@
             // label20
             // 
             label20.AutoSize = true;
-            label20.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label20.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label20.Location = new Point(80, 135);
             label20.Margin = new Padding(4, 0, 4, 0);
             label20.Name = "label20";
@@ -949,7 +956,7 @@
             // btnPlaceDate
             // 
             btnPlaceDate.BackColor = Color.MistyRose;
-            btnPlaceDate.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            btnPlaceDate.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             btnPlaceDate.Location = new Point(56, 217);
             btnPlaceDate.Name = "btnPlaceDate";
             btnPlaceDate.Size = new Size(140, 83);
@@ -961,7 +968,7 @@
             // label21
             // 
             label21.AutoSize = true;
-            label21.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label21.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label21.Location = new Point(80, 90);
             label21.Margin = new Padding(4, 0, 4, 0);
             label21.Name = "label21";
@@ -1009,7 +1016,7 @@
             // lblFontStatus
             // 
             lblFontStatus.AutoSize = true;
-            lblFontStatus.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            lblFontStatus.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             lblFontStatus.Location = new Point(9, 80);
             lblFontStatus.Margin = new Padding(4, 0, 4, 0);
             lblFontStatus.Name = "lblFontStatus";
@@ -1020,6 +1027,8 @@
             // groupBox6
             // 
             groupBox6.BackColor = SystemColors.GradientActiveCaption;
+            groupBox6.Controls.Add(label10);
+            groupBox6.Controls.Add(cmbMainTextSource);
             groupBox6.Controls.Add(label17);
             groupBox6.Controls.Add(txtMainText);
             groupBox6.Controls.Add(numMainTextWidth);
@@ -1029,7 +1038,7 @@
             groupBox6.Controls.Add(btnPlaceMainText);
             groupBox6.Controls.Add(numMainTextSize);
             groupBox6.Controls.Add(label23);
-            groupBox6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            groupBox6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox6.Location = new Point(1310, 727);
             groupBox6.Margin = new Padding(4, 5, 4, 5);
             groupBox6.Name = "groupBox6";
@@ -1039,11 +1048,29 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "Текст для благодарности";
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(9, 32);
+            label10.Name = "label10";
+            label10.Size = new Size(143, 25);
+            label10.TabIndex = 25;
+            label10.Text = "Колонка текст ";
+            // 
+            // cmbMainTextSource
+            // 
+            cmbMainTextSource.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMainTextSource.FormattingEnabled = true;
+            cmbMainTextSource.Location = new Point(9, 60);
+            cmbMainTextSource.Name = "cmbMainTextSource";
+            cmbMainTextSource.Size = new Size(462, 33);
+            cmbMainTextSource.TabIndex = 24;
+            // 
             // label17
             // 
             label17.AutoSize = true;
-            label17.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
-            label17.Location = new Point(104, 498);
+            label17.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            label17.Location = new Point(104, 529);
             label17.Margin = new Padding(4, 0, 4, 0);
             label17.Name = "label17";
             label17.Size = new Size(190, 25);
@@ -1053,7 +1080,7 @@
             // txtMainText
             // 
             txtMainText.AcceptsReturn = true;
-            txtMainText.Location = new Point(9, 63);
+            txtMainText.Location = new Point(9, 126);
             txtMainText.Margin = new Padding(4, 5, 4, 5);
             txtMainText.Multiline = true;
             txtMainText.Name = "txtMainText";
@@ -1064,7 +1091,7 @@
             // numMainTextWidth
             // 
             numMainTextWidth.Increment = new decimal(new int[] { 50, 0, 0, 0 });
-            numMainTextWidth.Location = new Point(29, 485);
+            numMainTextWidth.Location = new Point(29, 516);
             numMainTextWidth.Maximum = new decimal(new int[] { 3000, 0, 0, 0 });
             numMainTextWidth.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
             numMainTextWidth.Name = "numMainTextWidth";
@@ -1075,8 +1102,8 @@
             // lblMainTextHint
             // 
             lblMainTextHint.AutoSize = true;
-            lblMainTextHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
-            lblMainTextHint.Location = new Point(9, 33);
+            lblMainTextHint.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            lblMainTextHint.Location = new Point(9, 101);
             lblMainTextHint.Margin = new Padding(4, 0, 4, 0);
             lblMainTextHint.Name = "lblMainTextHint";
             lblMainTextHint.Size = new Size(459, 25);
@@ -1086,8 +1113,8 @@
             // label22
             // 
             label22.AutoSize = true;
-            label22.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
-            label22.Location = new Point(104, 540);
+            label22.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            label22.Location = new Point(104, 571);
             label22.Margin = new Padding(4, 0, 4, 0);
             label22.Name = "label22";
             label22.Size = new Size(155, 25);
@@ -1097,7 +1124,7 @@
             // numMainTextY
             // 
             numMainTextY.Increment = new decimal(new int[] { 10, 0, 0, 0 });
-            numMainTextY.Location = new Point(29, 440);
+            numMainTextY.Location = new Point(29, 471);
             numMainTextY.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             numMainTextY.Name = "numMainTextY";
             numMainTextY.Size = new Size(69, 31);
@@ -1107,8 +1134,8 @@
             // btnPlaceMainText
             // 
             btnPlaceMainText.BackColor = Color.MistyRose;
-            btnPlaceMainText.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
-            btnPlaceMainText.Location = new Point(310, 458);
+            btnPlaceMainText.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            btnPlaceMainText.Location = new Point(309, 509);
             btnPlaceMainText.Name = "btnPlaceMainText";
             btnPlaceMainText.Size = new Size(217, 83);
             btnPlaceMainText.TabIndex = 23;
@@ -1118,7 +1145,7 @@
             // 
             // numMainTextSize
             // 
-            numMainTextSize.Location = new Point(29, 530);
+            numMainTextSize.Location = new Point(29, 561);
             numMainTextSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
             numMainTextSize.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             numMainTextSize.Name = "numMainTextSize";
@@ -1129,8 +1156,8 @@
             // label23
             // 
             label23.AutoSize = true;
-            label23.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
-            label23.Location = new Point(104, 450);
+            label23.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            label23.Location = new Point(104, 481);
             label23.Margin = new Padding(4, 0, 4, 0);
             label23.Name = "label23";
             label23.Size = new Size(107, 25);
@@ -1145,7 +1172,7 @@
             groupBox7.Controls.Add(lblFontStatus);
             groupBox7.Controls.Add(pnlGlobalColor);
             groupBox7.Controls.Add(btnGlobalPipette);
-            groupBox7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            groupBox7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox7.Location = new Point(884, 938);
             groupBox7.Margin = new Padding(4, 5, 4, 5);
             groupBox7.Name = "groupBox7";
@@ -1158,7 +1185,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic);
+            label7.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
             label7.Location = new Point(77, 160);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
@@ -1166,12 +1193,67 @@
             label7.TabIndex = 20;
             label7.Text = "Цвет";
             // 
+            // lblPresetsHint
+            // 
+            lblPresetsHint.AutoSize = true;
+            lblPresetsHint.Location = new Point(1902, 792);
+            lblPresetsHint.Name = "lblPresetsHint";
+            lblPresetsHint.Size = new Size(82, 25);
+            lblPresetsHint.TabIndex = 23;
+            lblPresetsHint.Text = "Пресеты";
+            // 
+            // cmbPresets
+            // 
+            cmbPresets.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPresets.FormattingEnabled = true;
+            cmbPresets.Location = new Point(1902, 820);
+            cmbPresets.MaxDropDownItems = 20;
+            cmbPresets.Name = "cmbPresets";
+            cmbPresets.Size = new Size(289, 33);
+            cmbPresets.TabIndex = 24;
+            cmbPresets.SelectedIndexChanged += cmbPresets_SelectedIndexChanged;
+            // 
+            // btnRefreshPresets
+            // 
+            btnRefreshPresets.Location = new Point(1902, 859);
+            btnRefreshPresets.Name = "btnRefreshPresets";
+            btnRefreshPresets.Size = new Size(67, 66);
+            btnRefreshPresets.TabIndex = 25;
+            btnRefreshPresets.Text = "🔄";
+            btnRefreshPresets.UseVisualStyleBackColor = true;
+            btnRefreshPresets.Click += btnRefreshPresets_Click;
+            // 
+            // btnSavePreset
+            // 
+            btnSavePreset.Location = new Point(1975, 859);
+            btnSavePreset.Name = "btnSavePreset";
+            btnSavePreset.Size = new Size(143, 66);
+            btnSavePreset.TabIndex = 26;
+            btnSavePreset.Text = "💾 Сохранить как...";
+            btnSavePreset.UseVisualStyleBackColor = true;
+            btnSavePreset.Click += btnSavePreset_Click;
+            // 
+            // btnDeletePreset
+            // 
+            btnDeletePreset.Location = new Point(2126, 859);
+            btnDeletePreset.Name = "btnDeletePreset";
+            btnDeletePreset.Size = new Size(66, 66);
+            btnDeletePreset.TabIndex = 27;
+            btnDeletePreset.Text = "🗑️";
+            btnDeletePreset.UseVisualStyleBackColor = true;
+            btnDeletePreset.Click += btnDeletePreset_Click;
+            // 
             // lblHours
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
             ClientSize = new Size(2257, 1350);
+            Controls.Add(btnDeletePreset);
+            Controls.Add(btnSavePreset);
+            Controls.Add(btnRefreshPresets);
+            Controls.Add(cmbPresets);
+            Controls.Add(lblPresetsHint);
             Controls.Add(groupBox7);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
@@ -1323,5 +1405,12 @@
         private Label lblGoogleStatus;
         private GroupBox groupBox7;
         private Label label7;
+        private Label lblPresetsHint;
+        private ComboBox cmbPresets;
+        private Button btnRefreshPresets;
+        private Button btnSavePreset;
+        private Button btnDeletePreset;
+        private Label label10;
+        private ComboBox cmbMainTextSource;
     }
 }

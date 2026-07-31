@@ -4,6 +4,7 @@ using PdfSharp.Pdf;
 using System.Data;
 using System.Drawing.Text;
 using System.Text.RegularExpressions;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Certif
@@ -13,8 +14,11 @@ namespace Certif
         // Переменные для хранения загруженных данных
         private Image backgroundImage;
         private string fontFilePath = "";
-        private string selectedSystemFontName = "Arial"; // <-- Новая переменная для системного шрифта
+        private string selectedSystemFontName = "Arial";
+        private string presetsFolderPath;
         private DataTable dataTable; // <-- Добавили эту строку для хранения таблицы
+        private string fontsFolderPath;
+        private bool isSuppressingFontDialog = false;
 
         // Новые переменные для работы со шрифтами
         private PrivateFontCollection privateFonts = new PrivateFontCollection();
@@ -28,7 +32,8 @@ namespace Certif
         private Font fontMainText;
 
         private string activePlacementMode = null; // Может быть "FIO", "REG" или null
-        private const string SKIP_OPTION = "-- Не печатать --";
+        private const string SKIP_OPTION = "-- Не печатать --";        
+        private const string COMMON_TEXT_OPTION = "Общий для всех"; // <-- Новая константа
 
         private Color globalTextColor = Color.Black;
         private bool isPipetteMode = false;
@@ -36,6 +41,15 @@ namespace Certif
         public lblHours()
         {
             InitializeComponent();
+
+            string appFolder = AppDomain.CurrentDomain.BaseDirectory;
+            presetsFolderPath = Path.Combine(appFolder, "Presets");
+            fontsFolderPath = Path.Combine(appFolder, "Fonts"); // <-- Новая папка
+
+            if (!Directory.Exists(presetsFolderPath))
+                Directory.CreateDirectory(presetsFolderPath);
+            if (!Directory.Exists(fontsFolderPath))
+                Directory.CreateDirectory(fontsFolderPath); // <-- Создаем пап
 
             // 2. Привязка событий для ФИО и Региона
             numFioY.ValueChanged += (s, e) => UpdatePreview();
@@ -81,9 +95,16 @@ namespace Certif
             numMainTextY.ValueChanged += (s, e) => UpdatePreview();
             numMainTextSize.ValueChanged += (s, e) => { LoadFonts(); };
             numMainTextWidth.ValueChanged += (s, e) => UpdatePreview();
+            cmbMainTextSource.SelectedIndexChanged += (s, e) => UpdatePreview();
 
             pnlGlobalColor.BackColor = globalTextColor;
             LoadSystemFonts();
+
+            // Загружаем системные шрифты при старте
+            LoadSystemFonts();
+
+            // Загружаем список пресетов
+            RefreshPresetsList();
         }
 
         private void LoadSystemFonts()
@@ -133,6 +154,8 @@ namespace Certif
             cmbWorkshopCol.Items.Clear(); cmbWorkshopCol.Items.Add(SKIP_OPTION);
             cmbLevelCol.Items.Clear(); cmbLevelCol.Items.Add(SKIP_OPTION);
             cmbSquadCol.Items.Clear(); cmbSquadCol.Items.Add(SKIP_OPTION);
+            // НОВОЕ: Очищаем и заполняем список источников основного текста
+            cmbMainTextSource.Items.Clear();
 
             foreach (DataColumn col in dataTable.Columns)
             {
@@ -141,6 +164,7 @@ namespace Certif
                 cmbWorkshopCol.Items.Add(col.ColumnName);
                 cmbLevelCol.Items.Add(col.ColumnName);
                 cmbSquadCol.Items.Add(col.ColumnName);
+                cmbMainTextSource.Items.Add(col.ColumnName);
             }
 
             foreach (DataColumn col in dataTable.Columns)
@@ -152,6 +176,7 @@ namespace Certif
                 if (lower.Contains("мастерская") || lower.Contains("студии") || lower.Contains("цех") || lower.Contains("лаборатория")) cmbWorkshopCol.SelectedItem = colName;
                 if (lower.Contains("уровень") || lower.Contains("квалификация") || lower.Contains("разряд") || lower.Contains("класс")) cmbLevelCol.SelectedItem = colName;
                 if (lower.Contains("отряд") || lower.Contains("команда") || lower.Contains("группа") || lower.Contains("смена")) cmbSquadCol.SelectedItem = colName;
+                if (lower.Contains("благодарность") || lower.Contains("текст")) cmbMainTextSource.SelectedItem = colName;
             }
 
             if (cmbFioCol.SelectedItem == null) cmbFioCol.SelectedItem = SKIP_OPTION;
@@ -159,6 +184,7 @@ namespace Certif
             if (cmbWorkshopCol.SelectedItem == null) cmbWorkshopCol.SelectedItem = SKIP_OPTION;
             if (cmbLevelCol.SelectedItem == null) cmbLevelCol.SelectedItem = SKIP_OPTION;
             if (cmbSquadCol.SelectedItem == null) cmbSquadCol.SelectedItem = SKIP_OPTION;
+            cmbMainTextSource.SelectedItem = COMMON_TEXT_OPTION;
         }
 
         // Метод для обработки CSV-текста (из файла или из Google)
@@ -432,29 +458,51 @@ namespace Certif
                             g.DrawString(dateText, fontDate, textBrush, (float)numDateX.Value, (float)numDateY.Value);
                         }
 
+                        // ==========================================
                         // 8. Основной текст благодарности (Многострочный, по центру, с переносом)
-
+                        // ==========================================
                         if (fontMainText != null)
                         {
-                            // Если поле пустое, показываем длинную заглушку для удобной настройки
-                            string mainText = string.IsNullOrWhiteSpace(txtMainText.Text)
-                                ? " "
-                                : txtMainText.Text;
+                            // Определяем источник текста
+                            string mainText = "";
+                            string selectedSource = cmbMainTextSource.SelectedItem?.ToString();
+
+                            if (selectedSource == COMMON_TEXT_OPTION)
+                            {
+                                // Используем общий текст из поля ввода
+                                mainText = txtMainText.Text;
+                            }
+                            else if (!string.IsNullOrEmpty(selectedSource) && dataTable != null && dataTable.Rows.Count > 0)
+                            {
+                                // Берем текст из колонки таблицы
+                                try
+                                {
+                                    mainText = dataTable.Rows[0][selectedSource].ToString();
+                                }
+                                catch
+                                {
+                                    mainText = ""; // Если колонка не найдена, оставляем пустым
+                                }
+                            }
+
+                            // Если текст пустой, показываем заглушку для предпросмотра
+                            if (string.IsNullOrWhiteSpace(mainText))
+                            {
+                                mainText = "успешно освоил дополнительную общеобразовательную общеразвивающую программу «Страна профессионалов» в объёме 210 академических часов...";
+                            }
 
                             // Рассчитываем X для центрирования блока заданной ширины
                             float mainTextWidth = (float)numMainTextWidth.Value;
                             float mainTextX = Math.Max(0, (backgroundImage.Width - mainTextWidth) / 2f);
 
-                            // Настраиваем форматирование: по центру горизонтально, прижато к верху вертикально
+                            // Настраиваем форматирование
                             using (StringFormat sf = new StringFormat())
                             {
-                                sf.Alignment = StringAlignment.Center;      // Центрируем каждую строку внутри блока
-                                sf.LineAlignment = StringAlignment.Near;    // Прижимаем к верхней границе прямоугольника
-                                sf.FormatFlags = StringFormatFlags.LineLimit; // Обрезаем, если вдруг текст гигантский
+                                sf.Alignment = StringAlignment.Center;
+                                sf.LineAlignment = StringAlignment.Near;
+                                sf.FormatFlags = StringFormatFlags.LineLimit;
 
-                                // Создаем прямоугольник отрисовки (Height = 2000, чтобы текст мог переноситься много раз)
                                 RectangleF textRect = new RectangleF(mainTextX, (float)numMainTextY.Value, mainTextWidth, 2000f);
-
                                 g.DrawString(mainText, fontMainText, textBrush, textRect, sf);
                             }
                         }
@@ -593,9 +641,31 @@ namespace Certif
                                             {
                                                 g.DrawString(dateText, fontDate, textBrush, (float)numDateX.Value, (float)numDateY.Value);
                                             }
+                                            // ==========================================
                                             // 8. Основной текст благодарности (Рисуем ТОЛЬКО если поле не пустое)
                                             // ==========================================
-                                            string mainText = txtMainText.Text;
+                                            string mainText = "";
+                                            string selectedSource = cmbMainTextSource.SelectedItem?.ToString();
+
+                                            if (selectedSource == COMMON_TEXT_OPTION)
+                                            {
+                                                // Используем общий текст из поля ввода
+                                                mainText = txtMainText.Text;
+                                            }
+                                            else if (!string.IsNullOrEmpty(selectedSource))
+                                            {
+                                                // Берем текст из колонки таблицы для текущей строки
+                                                try
+                                                {
+                                                    mainText = row[selectedSource].ToString();
+                                                }
+                                                catch
+                                                {
+                                                    mainText = ""; // Если колонка не найдена, оставляем пустым
+                                                }
+                                            }
+
+                                            // Рисуем ТОЛЬКО если текст не пустой
                                             if (!string.IsNullOrWhiteSpace(mainText) && fontMainText != null)
                                             {
                                                 float mainTextWidth = (float)numMainTextWidth.Value;
@@ -893,6 +963,9 @@ namespace Certif
 
         private void cmbFontSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Если мы программно выбираем пункт при загрузке пресета — пропускаем логику
+            if (isSuppressingFontDialog) return;
+
             string selected = cmbFontSelector.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(selected)) return;
 
@@ -906,23 +979,22 @@ namespace Certif
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
                         fontFilePath = ofd.FileName;
-                        selectedSystemFontName = ""; // Очищаем выбор системного шрифта
+                        selectedSystemFontName = "";
                         lblFontStatus.Text = "✅ Загружен файл: " + Path.GetFileName(fontFilePath);
                         LoadFonts();
                     }
                     else
                     {
-                        // Пользователь нажал "Отмена", возвращаем предыдущий выбор (например, Arial)
+                        // Пользователь нажал "Отмена", возвращаем предыдущий выбор
                         cmbFontSelector.SelectedItem = string.IsNullOrEmpty(selectedSystemFontName) ? "Arial" : selectedSystemFontName;
                     }
                 }
-                // После диалога выходим, чтобы не сработала нижняя логика
                 return;
             }
             else
             {
                 // Выбран системный шрифт
-                fontFilePath = ""; // Очищаем путь к файлу
+                fontFilePath = "";
                 selectedSystemFontName = selected;
                 lblFontStatus.Text = "✅ Системный шрифт: " + selectedSystemFontName;
                 LoadFonts();
@@ -1049,8 +1121,360 @@ namespace Certif
                 lblGoogleStatus.Text = "❌ Ошибка обработки";
             }
         }
+
+        private void RefreshPresetsList()
+        {
+            cmbPresets.Items.Clear();
+
+            if (!Directory.Exists(presetsFolderPath))
+            {
+                cmbPresets.Items.Add("Нет сохраненных пресетов");
+                cmbPresets.Enabled = false;
+                return;
+            }
+
+            string[] presetFiles = Directory.GetFiles(presetsFolderPath, "*.json");
+
+            if (presetFiles.Length == 0)
+            {
+                cmbPresets.Items.Add("Нет сохраненных пресетов");
+                cmbPresets.Enabled = false;
+                return;
+            }
+
+            cmbPresets.Enabled = true;
+
+            foreach (string file in presetFiles)
+            {
+                string presetName = Path.GetFileNameWithoutExtension(file);
+                cmbPresets.Items.Add(presetName);
+            }
+        }
+
+        private void SavePreset()
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "JSON файлы|*.json";
+                sfd.InitialDirectory = presetsFolderPath;
+                sfd.Title = "Сохранить пресет как...";
+                sfd.FileName = "Новый пресет";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // Собираем все настройки в объект PresetData
+                        PresetData preset = new PresetData
+                        {
+                            PresetName = Path.GetFileNameWithoutExtension(sfd.FileName),
+
+                            // ФИО
+                            FioY = numFioY.Value,
+                            FioSize = numFioSize.Value,
+
+                            // Регион
+                            RegY = numRegY.Value,
+                            RegSize = numRegSize.Value,
+
+                            // Часы
+                            HoursX = numHoursX.Value,
+                            HoursY = numHoursY.Value,
+                            HoursSize = numHoursSize.Value,
+                            HoursText = txtHours.Text,
+
+                            // Мастерская
+                            WorkshopY = numWorkshopY.Value,
+                            WorkshopSize = numWorkshopSize.Value,
+
+                            // Уровень
+                            LevelX = numLevelX.Value,
+                            LevelY = numLevelY.Value,
+                            LevelSize = numLevelSize.Value,
+
+                            // Отряд
+                            SquadX = numSquadX.Value,
+                            SquadY = numSquadY.Value,
+                            SquadSize = numSquadSize.Value,
+
+                            // Дата
+                            DateX = numDateX.Value,
+                            DateY = numDateY.Value,
+                            DateSize = numDateSize.Value,
+                            DateText = txtDate.Text,
+
+                            // Основной текст
+                            MainTextY = numMainTextY.Value,
+                            MainTextSize = numMainTextSize.Value,
+                            MainTextWidth = numMainTextWidth.Value,
+                            MainText = txtMainText.Text,
+
+                            // Шрифт
+                            FontFileName = "",
+                            SystemFontName = selectedSystemFontName,
+
+
+                            // Цвет
+                            ColorR = globalTextColor.R,
+                            ColorG = globalTextColor.G,
+                            ColorB = globalTextColor.B,
+
+                            // Колонки из таблицы
+                            FioColumnName = cmbFioCol.SelectedItem?.ToString() ?? "",
+                            RegColumnName = cmbRegCol.SelectedItem?.ToString() ?? "",
+                            WorkshopColumnName = cmbWorkshopCol.SelectedItem?.ToString() ?? "",
+                            LevelColumnName = cmbLevelCol.SelectedItem?.ToString() ?? "",
+                            SquadColumnName = cmbSquadCol.SelectedItem?.ToString() ?? "",
+
+                            // Фон (опционально)
+                            BackgroundImagePath = "" // Не сохраняем путь к фону, так как он может быть на другом компьютере
+                        };
+
+                        if (!string.IsNullOrEmpty(fontFilePath) && File.Exists(fontFilePath))
+                        {
+                            string fontFileName = Path.GetFileName(fontFilePath);
+                            string destinationPath = Path.Combine(fontsFolderPath, fontFileName);
+
+                            // Копируем файл шрифта (если он еще не скопирован)
+                            if (!File.Exists(destinationPath) || fontFilePath != destinationPath)
+                            {
+                                File.Copy(fontFilePath, destinationPath, overwrite: true);
+                            }
+
+                            preset.FontFileName = fontFileName; // Сохраняем только имя файла
+                        }
+
+                        // Сериализуем в JSON
+                        string json = JsonSerializer.Serialize(preset, new JsonSerializerOptions { WriteIndented = true });
+
+                        // Сохраняем в файл
+                        File.WriteAllText(sfd.FileName, json, System.Text.Encoding.UTF8);
+
+                        MessageBox.Show($"Пресет успешно сохранен!\n\nФайл: {sfd.FileName}", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Обновляем список пресетов
+                        RefreshPresetsList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при сохранении пресета:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btnSavePreset_Click(object sender, EventArgs e)
+        {
+            SavePreset();
+        }
+
+        private void LoadPreset(string filePath)
+        {
+            try
+            {
+                // Читаем JSON из файла
+                string json = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
+
+                // Десериализуем в объект PresetData
+                PresetData preset = JsonSerializer.Deserialize<PresetData>(json);
+
+                if (preset == null)
+                {
+                    MessageBox.Show("Не удалось прочитать файл пресета.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Применяем все настройки к форме
+
+                // ФИО (только Y и размер, X авто-центрируется)
+                numFioY.Value = preset.FioY;
+                numFioSize.Value = preset.FioSize;
+
+                // Регион (только Y и размер)
+                numRegY.Value = preset.RegY;
+                numRegSize.Value = preset.RegSize;
+
+                // Часы (полные координаты)
+                numHoursX.Value = preset.HoursX;
+                numHoursY.Value = preset.HoursY;
+                numHoursSize.Value = preset.HoursSize;
+                txtHours.Text = preset.HoursText;
+
+                // Мастерская (только Y и размер)
+                numWorkshopY.Value = preset.WorkshopY;
+                numWorkshopSize.Value = preset.WorkshopSize;
+
+                // Уровень (полные координаты)
+                numLevelX.Value = preset.LevelX;
+                numLevelY.Value = preset.LevelY;
+                numLevelSize.Value = preset.LevelSize;
+
+                // Отряд (полные координаты)
+                numSquadX.Value = preset.SquadX;
+                numSquadY.Value = preset.SquadY;
+                numSquadSize.Value = preset.SquadSize;
+
+                // Дата (полные координаты)
+                numDateX.Value = preset.DateX;
+                numDateY.Value = preset.DateY;
+                numDateSize.Value = preset.DateSize;
+                txtDate.Text = preset.DateText;
+
+                // Основной текст
+                numMainTextY.Value = preset.MainTextY;
+                numMainTextSize.Value = preset.MainTextSize;
+                numMainTextWidth.Value = preset.MainTextWidth;
+                txtMainText.Text = preset.MainText;
+
+                // Шрифт
+                if (!string.IsNullOrEmpty(preset.FontFileName))
+                {
+                    string fontPath = Path.Combine(fontsFolderPath, preset.FontFileName);
+
+                    if (File.Exists(fontPath))
+                    {
+                        fontFilePath = fontPath;
+                        selectedSystemFontName = "";
+
+                        // Устанавливаем флаг ПЕРЕД изменением ComboBox
+                        isSuppressingFontDialog = true;
+
+                        // Выбираем пункт "Загрузить свой файл" в ComboBox
+                        foreach (var item in cmbFontSelector.Items)
+                        {
+                            if (item.ToString().Contains("Загрузить свой файл"))
+                            {
+                                cmbFontSelector.SelectedItem = item;
+                                break;
+                            }
+                        }
+
+                        // ВАЖНО: Обрабатываем все отложенные события с флагом
+                        Application.DoEvents();
+
+                        // Снимаем флаг ПОСЛЕ обработки всех событий
+                        isSuppressingFontDialog = false;
+
+                        lblFontStatus.Text = "✅ Загружен файл: " + preset.FontFileName;
+
+                        // Загружаем шрифты с новыми настройками
+                        LoadFonts();
+                    }
+                    else
+                    {
+                        fontFilePath = "";
+                        selectedSystemFontName = "Arial";
+                        cmbFontSelector.SelectedItem = "Arial";
+                        lblFontStatus.Text = "⚠️ Шрифт '" + preset.FontFileName + "' не найден. Используется Arial.";
+                    }
+                }
+                else if (!string.IsNullOrEmpty(preset.SystemFontName))
+                {
+                    fontFilePath = "";
+                    selectedSystemFontName = preset.SystemFontName;
+
+                    if (cmbFontSelector.Items.Contains(preset.SystemFontName))
+                    {
+                        cmbFontSelector.SelectedItem = preset.SystemFontName;
+                    }
+                    else
+                    {
+                        cmbFontSelector.SelectedItem = "Arial";
+                        lblFontStatus.Text = "⚠️ Шрифт '" + preset.SystemFontName + "' не найден. Используется Arial.";
+                    }
+                }
+
+                // Цвет
+                globalTextColor = Color.FromArgb(preset.ColorR, preset.ColorG, preset.ColorB);
+                pnlGlobalColor.BackColor = globalTextColor;
+
+                // Колонки из таблицы (если они есть в текущей таблице)
+                if (cmbFioCol.Items.Contains(preset.FioColumnName)) cmbFioCol.SelectedItem = preset.FioColumnName;
+                if (cmbRegCol.Items.Contains(preset.RegColumnName)) cmbRegCol.SelectedItem = preset.RegColumnName;
+                if (cmbWorkshopCol.Items.Contains(preset.WorkshopColumnName)) cmbWorkshopCol.SelectedItem = preset.WorkshopColumnName;
+                if (cmbLevelCol.Items.Contains(preset.LevelColumnName)) cmbLevelCol.SelectedItem = preset.LevelColumnName;
+                if (cmbSquadCol.Items.Contains(preset.SquadColumnName)) cmbSquadCol.SelectedItem = preset.SquadColumnName;
+
+                // Загружаем шрифты с новыми размерами
+                LoadFonts();
+
+                // Обновляем предпросмотр
+                UpdatePreview();
+
+                lblStatus.Text = $"✅ Пресет '{preset.PresetName}' загружен.";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке пресета:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cmbPresets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedPreset = cmbPresets.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(selectedPreset) || selectedPreset == "Нет сохраненных пресетов")
+            {
+                return;
+            }
+
+            string filePath = Path.Combine(presetsFolderPath, selectedPreset + ".json");
+
+            if (File.Exists(filePath))
+            {
+                LoadPreset(filePath);
+            }
+            else
+            {
+                MessageBox.Show("Файл пресета не найден:\n" + filePath, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnRefreshPresets_Click(object sender, EventArgs e)
+        {
+            RefreshPresetsList();
+            lblStatus.Text = "🔄 Список пресетов обновлен.";
+        }
+
+        private void btnDeletePreset_Click(object sender, EventArgs e)
+        {
+            string selectedPreset = cmbPresets.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(selectedPreset) || selectedPreset == "Нет сохраненных пресетов")
+            {
+                MessageBox.Show("Выберите пресет для удаления.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Вы уверены, что хотите удалить пресет '{selectedPreset}'?\n\nЭто действие нельзя отменить.",
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    string filePath = Path.Combine(presetsFolderPath, selectedPreset + ".json");
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                        lblStatus.Text = $"🗑️ Пресет '{selectedPreset}' удален.";
+                        RefreshPresetsList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при удалении пресета:\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
      
     }
+
+
 
 
 }
