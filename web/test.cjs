@@ -10,6 +10,41 @@ async function downloadBytes(page,action){const waiting=page.waitForEvent('downl
  await context.setOffline(true);
  await page.goto(pathToFileURL(path.join(__dirname,'Сертификаты.html')).href);await page.waitForFunction(()=>document.getElementById('fields').children.length===8);
  assert.equal(await page.evaluate(()=>document.fonts.check('20px "Roboto Serif"')),true);
+ // A field can inherit the shared font or override it, with independent styles.
+ await page.selectOption('#font','Arial');
+ await page.check('#ownFont');await page.selectOption('#fieldFont','Georgia');
+ await page.click('#bold');await page.click('#italic');
+ await page.getByRole('button',{name:'Основной текст',exact:true}).click();
+ assert.equal(await page.locator('#ownFont').isChecked(),false);
+ assert.equal(await page.locator('#fieldFont').isDisabled(),true);
+ assert.equal(await page.locator('#bold').getAttribute('aria-pressed'),'false');
+ await page.selectOption('#font','Verdana');
+ assert.equal(await page.locator('#fieldFont').inputValue(),'Verdana');
+ await page.getByRole('button',{name:'ФИО',exact:true}).click();
+ assert.equal(await page.locator('#fieldFont').inputValue(),'Georgia');
+ assert.equal(await page.locator('#bold').getAttribute('aria-pressed'),'true');
+ assert.equal(await page.locator('#italic').getAttribute('aria-pressed'),'true');
+ // Inspect actual canvas text drawing for preview and PDF rendering.
+ const drawn=await page.evaluate(()=>{
+  const fonts=[],original=CanvasRenderingContext2D.prototype.fillText;
+  CanvasRenderingContext2D.prototype.fillText=function(text,...args){fonts.push({text,font:this.font});return original.call(this,text,...args);};
+  try{paint(document.createElement('canvas'),0,true);}finally{CanvasRenderingContext2D.prototype.fillText=original;}
+  return fonts;
+ });
+ assert.match(drawn.find(f=>f.text==='Имя Фамилия').font,/italic.*bold.*Georgia/);
+ assert.match(drawn.find(f=>f.text.includes('за участие')).font,/Verdana/);
+ const stylePreset=await downloadBytes(page,()=>page.click('#savePreset'));
+ await page.selectOption('#preset','default');
+ await page.setInputFiles('#presetFile',{name:'styles.json',mimeType:'application/json',buffer:stylePreset});
+ await page.waitForFunction(()=>state.fields.fio.ownFont&&state.fields.fio.bold&&state.fields.fio.italic);
+ assert.equal(await page.locator('#fieldFont').inputValue(),'Georgia');
+ await page.uncheck('#ownFont');assert.equal(await page.locator('#fieldFont').inputValue(),'Verdana');
+ const legacy=JSON.parse(stylePreset);for(const f of Object.values(legacy.fields)){delete f.font;delete f.ownFont;delete f.bold;delete f.italic;}
+ await page.setInputFiles('#presetFile',{name:'old.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(legacy))});
+ await page.waitForFunction(()=>!state.fields.fio.bold);
+ assert.equal(await page.locator('#fieldFont').inputValue(),'Verdana');
+ assert.equal(await page.locator('#ownFont').isChecked(),false);
+ await page.selectOption('#preset','default');
  await page.click('#export');assert.match(await page.locator('#status').textContent(),/Добавьте список/);
  await page.click('#manual');await page.fill('#names','Иванова Анна Сергеевна\nПетров Михаил Андреевич');await page.click('#useNames');assert.match(await page.locator('#dataName').textContent(),/2 строк/);
  await page.getByRole('button',{name:'Основной текст',exact:true}).click();await page.fill('#text','За успехи в учёбе\nи стремление к знаниям');
@@ -51,6 +86,23 @@ async function downloadBytes(page,action){const waiting=page.waitForEvent('downl
  await page.selectOption('#preset','preset:Диплом ДИТЦ.json');await page.waitForFunction(()=>state.font==='Roboto Serif');assert.equal(await page.evaluate(()=>state.width),1000);assert.equal(await page.evaluate(()=>state.height),700);assert.equal(await page.evaluate(()=>state.background),png);assert.equal(await page.locator('#backgroundName').textContent(),'background.png');assert.ok(Math.abs(await page.evaluate(()=>state.fields.fio.y)-1515*700/3508)<.001);
  await page.setInputFiles('#presetFile',path.join(__dirname,'assets','presets','Диплом ДИТЦ.json'));await page.waitForFunction(()=>document.getElementById('preset').value==='custom');assert.equal(await page.evaluate(()=>state.background),png);assert.equal(await page.evaluate(()=>state.width),1000);
  await page.setInputFiles('#presetFile',{name:'font.json',mimeType:'application/json',buffer:fontSaved});await page.waitForFunction(()=>state.width===1000&&state.font==='UserFont');assert.equal(await page.evaluate(()=>document.fonts.check('20px UserFont')),true);
+ // Keep an embedded custom font used only by one field while the rest use Arial.
+ await page.getByRole('button',{name:'ФИО',exact:true}).click();await page.check('#ownFont');
+ await page.click('#bold');await page.click('#italic');await page.selectOption('#font','Arial');
+ const customOnly=await downloadBytes(page,()=>page.click('#savePreset'));
+ assert.equal(JSON.parse(customOnly).font,'Arial');assert.match(JSON.parse(customOnly).fontData,/^data:/);
+ await page.selectOption('#preset','default');
+ await page.setInputFiles('#presetFile',{name:'custom-only.json',mimeType:'application/json',buffer:customOnly});
+ await page.waitForFunction(()=>state.fields.fio.ownFont&&state.fields.fio.font==='UserFont');
+ assert.equal(await page.locator('#font').inputValue(),'Arial');assert.equal(await page.locator('#fieldFont').inputValue(),'UserFont');
+ const exportFonts=await page.evaluate(()=>{
+  const fonts=[],original=CanvasRenderingContext2D.prototype.fillText;
+  CanvasRenderingContext2D.prototype.fillText=function(text,...args){fonts.push({text,font:this.font});return original.call(this,text,...args);};
+  try{paint(document.createElement('canvas'),0);}finally{CanvasRenderingContext2D.prototype.fillText=original;}
+  return fonts;
+ });
+ assert.match(exportFonts.find(f=>f.text==='Иванов, Иван').font,/italic.*bold.*UserFont/);
+
  await page.click('#pipette');await page.locator('#preview').click({position:{x:2,y:2}});assert.equal(await page.locator('#color').inputValue(),'#aabbcc');
  // Excel workbook with multiple sheets, Cyrillic, and displayed number/date formatting.
  const xlsx=await page.evaluate(()=>{const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet([]),'Пустой');XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet([['ФИО','Дата'],['Сидорова','13.10.2026']]),'Первый');XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet([['ФИО'],['Второй участник']]),'Второй');return Array.from(new Uint8Array(XLSX.write(w,{bookType:'xlsx',type:'array'})));});
@@ -85,9 +137,9 @@ async function downloadBytes(page,action){const waiting=page.waitForEvent('downl
  // Height arrows follow visual direction; blank names never produce PDF pages.
  await page.getByRole('button',{name:'ФИО',exact:true}).click();
  const heightBefore=Number(await page.locator('#y').inputValue());
- await page.click('#heightDown');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore+1);
+ await page.click('#heightDown');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore+5);
  await page.click('#heightUp');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore);
- await page.locator('#y').press('ArrowDown');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore+1);
+ await page.locator('#y').press('ArrowDown');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore+5);
  await page.locator('#y').press('ArrowUp');assert.equal(Number(await page.locator('#y').inputValue()),heightBefore);
  const emptyNames='Регион;ФИО\nМосква;\nОмск;   \nКазань;Анна';
  await page.setInputFiles('#dataFile',{name:'empty-names.csv',mimeType:'text/csv',buffer:Buffer.from(emptyNames)});

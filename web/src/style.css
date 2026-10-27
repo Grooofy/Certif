@@ -25,3 +25,5 @@
  input:not([type=checkbox]):not([type=color]),select,textarea{margin-top:4px;padding:7px}
  .color-label{margin:10px 0}.file-note{margin:6px 0}
 }
+
+.field-font-toggle{display:block;margin-top:12px}.font-size-row{display:flex;align-items:flex-end;gap:7px}.font-size-row>label{flex:1;min-width:0}.font-style{width:37px;height:37px;flex-shrink:0;font-size:16px}.font-style[aria-pressed="true"]{background:#e6f0e7;border-color:#85ab90;color:#205d4c}select:disabled{background:#f3f5f1;color:#78877e}
